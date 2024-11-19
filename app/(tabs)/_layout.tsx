@@ -23,6 +23,16 @@ export default function TabLayout() {
         }}
         component={Index}
       />
+      <Tab.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={size}/>
+          )
+        }}
+        component={Index}
+      />
     </Tab.Navigator>
   );
 }
