@@ -1,10 +1,15 @@
 import { Appbar } from 'react-native-paper';
 
 
-export default function NavigationBar() {
+interface Props {
+  title?: string
+}
+
+
+export default function NavigationBar({ title }: Props) {
   return (
     <Appbar.Header>
-      <Appbar.Content title="test"/>
+      <Appbar.Content title={title ? title : ''}/>
     </Appbar.Header>
   )
 }
