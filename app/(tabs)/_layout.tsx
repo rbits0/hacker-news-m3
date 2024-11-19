@@ -3,6 +3,7 @@ import Index from '.';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBar from '@/components/TabBar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Settings from './settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +32,7 @@ export default function TabLayout() {
             <MaterialCommunityIcons name="cog" color={color} size={size}/>
           )
         }}
-        component={Index}
+        component={Settings}
       />
     </Tab.Navigator>
   );
