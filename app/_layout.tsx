@@ -6,8 +6,8 @@ import { PaperProvider } from 'react-native-paper';
 export default function RootLayout() {
   return (
     <PaperProvider>
-      <Stack screenOptions={{ header: ({ options }) => <NavigationBar title={options.title} /> }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)"/>
         <Stack.Screen name="+not-found"/>
       </Stack>
     </PaperProvider>
