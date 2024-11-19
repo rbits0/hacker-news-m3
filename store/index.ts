@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
+import frontPageReducer from './slices/frontPageSlice';
 
 
 export default configureStore({
-  reducer: {},
+  reducer: {
+    frontPage: frontPageReducer,
+  },
 })

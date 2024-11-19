@@ -34,3 +34,6 @@ export const frontPageSlice = createSlice({
   initialState,
   reducers: {},
 })
+
+
+export default frontPageSlice.reducer;
