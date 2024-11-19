@@ -1,10 +1,11 @@
-import { Stack } from "expo-router";
-import { PaperProvider } from "react-native-paper";
+import NavigationBar from '@/components/NavigationBar';
+import { Stack } from 'expo-router';
+import { PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
   return (
-    // <PaperProvider>
-      <Stack />
-    // </PaperProvider>
+    <PaperProvider>
+      <Stack screenOptions={{ header: () => <NavigationBar /> }} />
+    </PaperProvider>
   );
 }
