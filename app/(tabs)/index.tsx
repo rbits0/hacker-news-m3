@@ -1,9 +1,13 @@
+import Story from '@/components/Story';
+import { RootState } from '@/store';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button, useTheme } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 
 export default function Index() {
   const theme = useTheme();
+  const items = useSelector((state: RootState) => state.frontPage.items);
 
   return (
     <View
@@ -17,6 +21,7 @@ export default function Index() {
       >
         Hello
       </Button>
+      <Story item={items[0]} />
     </View>
   );
 }
