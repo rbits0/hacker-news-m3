@@ -23,6 +23,7 @@ const initialState: FrontPageState = {
       time: 1,
       title: 'Woah',
       url: 'https://www.ycombinator.com',
+      descendants: 10,
     }
   ],
   storiesType: StoriesType.Top,

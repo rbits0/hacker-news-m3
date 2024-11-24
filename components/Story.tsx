@@ -1,8 +1,10 @@
 import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ExternalPathString } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, Surface, Text } from 'react-native-paper';
+import OptionalLink from './OptionalLink';
 
 
 interface Props {
@@ -22,9 +24,12 @@ export default function Story({ item }: Props) {
         )}
         onPress={() => {}}
       />
-      <Surface style={styles.surface}>
-        <Text variant="bodyLarge">{item.title}</Text>
-      </Surface>
+      <OptionalLink href={item.url as ExternalPathString} enabled={true}>
+        <Surface style={styles.surface}>
+          <Text variant="bodyLarge">{item.title}</Text>
+          <Text variant="bodyMedium">{item.descendants} comments</Text>
+        </Surface>
+      </OptionalLink>
     </View>
   )
 }
@@ -39,9 +44,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   surface: {
-    padding: 20,
+    padding: 15,
     borderRadius: 10,
     width: '100%',
+    gap: 4,
   },
   button: {
   },
