@@ -31,23 +31,23 @@ export default function Story({ item }: Props) {
         disabled={item === undefined}
       />
     
-        <Surface style={[styles.surface, { height }]}>
-          <Surface elevation={3} style={styles.imageContainer} mode="flat">
-            <OptionalLink href={item?.url as ExternalPathString | undefined} enabled={true}>
-              <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 35} />
-            </OptionalLink>
-          </Surface>
+      <Surface style={[styles.surface, { height }]}>
+        <Surface elevation={3} style={styles.imageContainer} mode="flat">
+          <OptionalLink href={item?.url as ExternalPathString | undefined} enabled={true}>
+            <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 35} />
+          </OptionalLink>
+        </Surface>
 
-          {item ? (
-            <Link href={`https://news.ycombinator.com/item?id=${item.id}`}>
-              <View>
-                <Text variant="bodyLarge" onTextLayout={onTextLayout}>{item.title}</Text>
-                <Text variant="bodyMedium">{item.descendants} comments</Text>
-              </View>
-            </Link>
-          ) : (
-            <Text variant="bodyLarge">Failed to load item</Text>
-          )}
+        {item ? (
+          <Link href={`https://news.ycombinator.com/item?id=${item.id}`}>
+            <View>
+              <Text variant="bodyLarge" onTextLayout={onTextLayout}>{item.title}</Text>
+              <Text variant="bodyMedium">{item.descendants} comments</Text>
+            </View>
+          </Link>
+        ) : (
+          <Text variant="bodyLarge">Failed to load item</Text>
+        )}
         </Surface>
     </View>
   )
