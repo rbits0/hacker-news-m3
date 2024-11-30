@@ -7,7 +7,7 @@ export const hackerNewsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://hacker-news.firebaseio.com/v0/'}),
   endpoints: (builder) => ({
     getItemById: builder.query<Item, number>({
-      query: (id) => `item/${id}`,
+      query: (id) => `item/${id}.json`,
     })
   }),
 });
