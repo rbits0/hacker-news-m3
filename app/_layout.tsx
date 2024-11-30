@@ -5,9 +5,16 @@ import store from '@/store';
 
 
 const fontConfig = {
-  bodyLarge: {
-    fontSize: 20,
-  },
+  // bodyLarge: {
+  //   fontSize: 20,
+  //   lineHeight: 28,
+  //   // letterSpacing: 0
+  // },
+  // bodyMedium: {
+  //   fontSize: 16,
+  //   lineHeight: 24,
+  //   letterSpacing: 0,
+  // }
 };
 
 

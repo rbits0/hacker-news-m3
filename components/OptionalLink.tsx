@@ -3,17 +3,10 @@ import React from 'react';
 import { PropsWithChildren } from 'react';
 
 
-interface EnabledProps {
-  enabled?: true,
-  href: Href,
-}
-
-interface DisabledProps {
-  enabled: false,
+interface Props {
+  enabled?: boolean,
   href: Href | undefined | null,
 }
-
-type Props = EnabledProps | DisabledProps;
 
 export default function OptionalLink(
   { enabled, href, children }: PropsWithChildren<Props>
@@ -21,12 +14,14 @@ export default function OptionalLink(
   if (enabled === undefined) {
     enabled = true;
   }
+  if (!href) {
+    enabled = false;
+  }
   
   if (enabled) {
     return (
       <Link
         href={href!}
-        style={{ width: '100%', height: '100%' }}
       >
         {children}
       </Link>
