@@ -1,11 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import frontPageReducer from './slices/frontPageSlice';
+import { hackerNewsApi } from './services/hackerNews';
 
 
 const store = configureStore({
   reducer: {
+    [hackerNewsApi.reducerPath]: hackerNewsApi.reducer,
+
     frontPage: frontPageReducer,
   },
+  middleware: (getDefaultMiddleware) => (
+    getDefaultMiddleware()
+      .concat(hackerNewsApi.middleware)
+  ),
 });
 
 

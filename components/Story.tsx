@@ -8,7 +8,7 @@ import OptionalLink from './OptionalLink';
 
 
 interface Props {
-  item: Item
+  item: Item | undefined,
 }
 
 export default function Story({ item }: Props) {
@@ -23,13 +23,18 @@ export default function Story({ item }: Props) {
           <MaterialCommunityIcons name="heart-outline" size={size} color={color}/>
         )}
         onPress={() => {}}
+        disabled={item === undefined}
       />
-      <OptionalLink href={item.url as ExternalPathString} enabled={true}>
-        <Surface style={styles.surface}>
-          <Text variant="bodyLarge">{item.title}</Text>
-          <Text variant="bodyMedium">{item.descendants} comments</Text>
-        </Surface>
-      </OptionalLink>
+      {item ? (
+        <OptionalLink href={item.url as ExternalPathString} enabled={true}>
+          <Surface style={styles.surface}>
+            <Text variant="bodyLarge">{item.title}</Text>
+            <Text variant="bodyMedium">{item.descendants} comments</Text>
+          </Surface>
+        </OptionalLink>
+      ) : (
+        <Text variant="bodyLarge">Failed to load item</Text>
+      )}
     </View>
   )
 }

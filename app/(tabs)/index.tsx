@@ -1,5 +1,6 @@
 import Story from '@/components/Story';
 import { RootState } from '@/store';
+import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -8,6 +9,11 @@ import { useSelector } from 'react-redux';
 export default function Index() {
   const theme = useTheme();
   const items = useSelector((state: RootState) => state.frontPage.items);
+  const {
+    data: item,
+    error: itemError,
+    isLoading: itemIsLoading,
+  } = useGetItemByIdQuery(42276865);
 
   return (
     <View
@@ -21,7 +27,7 @@ export default function Index() {
       >
         Hello
       </Button>
-      <Story item={items[0]} />
+      <Story item={item} />
     </View>
   );
 }
