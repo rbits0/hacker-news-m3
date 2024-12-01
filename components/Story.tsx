@@ -17,7 +17,7 @@ export default function Story({ item }: Props) {
   
   const height = fontScale * (
       theme.fonts.bodyLarge.lineHeight + theme.fonts.bodyMedium.lineHeight
-    ) + 10;
+    ) + 6;
 
   return (
     <View style={styles.container}>
@@ -34,14 +34,14 @@ export default function Story({ item }: Props) {
       <Surface style={[styles.surface, { height }]}>
         <Surface elevation={3} style={styles.imageContainer} mode="flat">
           <OptionalLink href={item?.url as ExternalPathString | undefined} enabled={true}>
-            <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 35} />
+            <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
           </OptionalLink>
         </Surface>
 
         {item ? (
           <Link href={`https://news.ycombinator.com/item?id=${item.id}`}>
             <View>
-              <Text variant="bodyLarge" onTextLayout={onTextLayout}>{item.title}</Text>
+              <Text variant="bodyLarge">{item.title}</Text>
               <Text variant="bodyMedium">{item.descendants} comments</Text>
             </View>
           </Link>
@@ -60,14 +60,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    gap: 10,
   },
   surface: {
-    padding: 15,
+    padding: 4,
     borderRadius: 10,
     width: '100%',
     gap: 4,
+    flexDirection: 'row',
   },
   button: {
+  },
+  imageContainer: {
+    aspectRatio: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
