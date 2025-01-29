@@ -45,11 +45,13 @@ export default function Story({ item, itemId }: Props) {
       />
     
       <Surface style={[styles.surface]}>
-        <Surface elevation={3} style={styles.imageContainer} mode="flat">
-          <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
-            <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
-          </OptionalLink>
-        </Surface>
+        {itemToRender ? (
+          <Surface elevation={3} style={styles.imageContainer} mode="flat">
+            <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
+              <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
+            </OptionalLink>
+          </Surface>
+        ) : null}
 
         {itemToRender ? (
           <Link href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
@@ -59,7 +61,12 @@ export default function Story({ item, itemId }: Props) {
             </View>
           </Link>
         ) : (
-          <Text variant="bodyLarge">Failed to load item</Text>
+          <View style={styles.noItemView}>
+            <Text variant="bodyLarge">
+              {itemIsLoading ? 'Loading...' : 'Failed to load'}
+            </Text>
+            <Text variant="bodyMedium"> </Text>
+          </View>
         )}
         </Surface>
     </View>
@@ -82,8 +89,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  button: {
-  },
   imageContainer: {
     width: 44,
     height: 44,
@@ -91,4 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  noItemView: {
+    marginLeft: 4
+  }
 });
