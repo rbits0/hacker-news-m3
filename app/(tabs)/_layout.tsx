@@ -1,20 +1,17 @@
 import NavigationBar from '@/components/NavigationBar';
 import Index from '.';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Tabs } from 'expo-router';
 import TabBar from '@/components/TabBar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Settings from './settings';
 
-const Tab = createBottomTabNavigator();
-
-
 export default function TabLayout() {
   return (
-    <Tab.Navigator
+    <Tabs
       screenOptions={{ header: ({ options }) => <NavigationBar title={options.title} /> }}
       tabBar={props => <TabBar {...props} />}
     >
-      <Tab.Screen
+      <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
@@ -22,9 +19,8 @@ export default function TabLayout() {
             <MaterialCommunityIcons name="home" color={color} size={size}/>
           )
         }}
-        component={Index}
       />
-      <Tab.Screen
+      <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
@@ -32,8 +28,7 @@ export default function TabLayout() {
             <MaterialCommunityIcons name="cog" color={color} size={size}/>
           )
         }}
-        component={Settings}
       />
-    </Tab.Navigator>
+    </Tabs>
   );
 }
