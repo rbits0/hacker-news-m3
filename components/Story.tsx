@@ -45,30 +45,36 @@ export default function Story({ item, itemId }: Props) {
       />
     
       <Surface style={[styles.surface]}>
-        {itemToRender ? (
-          <Surface elevation={3} style={styles.imageContainer} mode="flat">
-            <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
-              <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
-            </OptionalLink>
-          </Surface>
-        ) : null}
+        <View style={[styles.surfaceRow]}>
+          {itemToRender ? (
+            <Surface elevation={3} style={styles.imageContainer} mode="flat">
+              <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
+                <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
+              </OptionalLink>
+            </Surface>
+          ) : null}
 
-        {itemToRender ? (
-          <Link href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
-            <View>
-              <Text variant="bodyLarge">{itemToRender.title}</Text>
-              <Text variant="bodyMedium">{itemToRender.descendants} comments</Text>
+          {itemToRender ? (
+            <Link href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
+              <View>
+                <Text variant="bodyLarge" >{itemToRender.title}</Text>
+              </View>
+            </Link>
+          ) : (
+            <View style={styles.noItemView}>
+              <Text variant="bodyLarge">
+                {itemIsLoading ? 'Loading...' : 'Failed to load'}
+              </Text>
+              <Text variant="bodyMedium"> </Text>
             </View>
-          </Link>
-        ) : (
-          <View style={styles.noItemView}>
-            <Text variant="bodyLarge">
-              {itemIsLoading ? 'Loading...' : 'Failed to load'}
-            </Text>
-            <Text variant="bodyMedium"> </Text>
-          </View>
-        )}
-        </Surface>
+          )}
+        </View>
+      
+        <Text variant="bodyMedium" style={[styles.commentText, { color: theme.colors.onSurfaceVariant }]}>
+          {itemToRender ? `${itemToRender.descendants} comments` : ' '}
+        </Text>
+
+      </Surface>
     </View>
   )
 }
@@ -84,19 +90,24 @@ const styles = StyleSheet.create({
   surface: {
     padding: 4,
     borderRadius: 10,
-    gap: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
     flex: 1,
+  },
+  surfaceRow: {
+    flexDirection: 'row',
+    gap: 4,
   },
   imageContainer: {
     width: 44,
     height: 44,
+    margin: 2,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   noItemView: {
     marginLeft: 4
-  }
+  },
+  commentText: {
+    margin: 4,
+  },
 });
