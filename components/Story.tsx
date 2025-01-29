@@ -5,15 +5,28 @@ import React from 'react';
 import { NativeSyntheticEvent, PixelRatio, StyleSheet, TextLayoutEventData, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
+import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 
 
 interface Props {
-  item: Item | undefined,
+  item?: Item,
+  itemId?: number,
 }
 
-export default function Story({ item }: Props) {
+export default function Story({ item, itemId }: Props) {
   const theme = useTheme();
   let fontScale = PixelRatio.getFontScale();
+
+  const {
+    data: fetchedItem,
+    isLoading: itemIsLoading,
+    isError: itemIsError,
+  } = useGetItemByIdQuery(itemId!, {
+    skip: itemId === undefined,
+  });
+
+  const itemToRender = fetchedItem ? fetchedItem : item;
+
   
   const height = fontScale * (
       theme.fonts.bodyLarge.lineHeight + theme.fonts.bodyMedium.lineHeight
@@ -28,21 +41,21 @@ export default function Story({ item }: Props) {
           <MaterialCommunityIcons name="arrow-up-bold-outline" size={30} color={color} style={{ marginTop: -1 }}/>
         )}
         onPress={() => {}}
-        disabled={item === undefined}
+        disabled={itemToRender === undefined}
       />
     
       <Surface style={[styles.surface]}>
         <Surface elevation={3} style={styles.imageContainer} mode="flat">
-          <OptionalLink href={item?.url as ExternalPathString | undefined} enabled={true}>
+          <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
             <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
           </OptionalLink>
         </Surface>
 
-        {item ? (
-          <Link href={`https://news.ycombinator.com/item?id=${item.id}`}>
+        {itemToRender ? (
+          <Link href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
             <View>
-              <Text variant="bodyLarge">{item.title}</Text>
-              <Text variant="bodyMedium">{item.descendants} comments</Text>
+              <Text variant="bodyLarge">{itemToRender.title}</Text>
+              <Text variant="bodyMedium">{itemToRender.descendants} comments</Text>
             </View>
           </Link>
         ) : (
