@@ -3,7 +3,7 @@ import { RootState } from '@/store';
 import Item from '@/store/Item';
 import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery, useGetItemByIdQuery } from '@/store/services/hackerNews';
 import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Text, Button, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -30,14 +30,14 @@ export default function Index() {
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      <Text>aaa {itemsAreLoading ? 'loading' : 'not loading'} {itemsQueryIsSuccess ? 'success' : 'not success'}</Text>
       <Story item={testItem} />
-      {itemIds
-        ? itemIds.slice(0, 20).map(itemId => (
-          <Story itemId={itemId} />
-        ))
-        : null
-      }
+
+      <FlatList
+        data={itemIds}
+        renderItem={({ item }) => <Story itemId={item} />}
+        contentContainerStyle={styles.innerList}
+        style={styles.list}
+      />
     </View>
   );
 }
@@ -47,7 +47,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    gap: 10,
     padding: 10,
+  },
+  list: {
+    width: '100%',
+  },
+  innerList: {
+    gap: 10,
   },
 });
