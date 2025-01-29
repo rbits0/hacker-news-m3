@@ -14,20 +14,15 @@ export default function Index() {
     error: itemError,
     isLoading: itemIsLoading,
   } = useGetItemByIdQuery(42276865);
+  const testItems = [item];
 
   return (
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      <Text style={styles.text}>Edit app/index.tsx to edit this screen.</Text>
-      <Button
-        mode="contained"
-        onPress={() => {}}
-        labelStyle={styles.buttonText}
-      >
-        Hello
-      </Button>
-      <Story item={item} />
+      {testItems.map(item => (
+        <Story item={item} />
+      ))}
     </View>
   );
 }
@@ -39,13 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-  },
-  text: {
-    fontSize: 20,
-  },
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    lineHeight: 24,
+    padding: 10,
   },
 });

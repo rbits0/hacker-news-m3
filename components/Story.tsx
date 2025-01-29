@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
   surface: {
     padding: 4,
     borderRadius: 10,
-    width: '100%',
     gap: 4,
     flexDirection: 'row',
+    flex: 1,
   },
   button: {
   },
