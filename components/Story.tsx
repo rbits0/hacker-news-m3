@@ -41,6 +41,7 @@ export default function Story({ item, itemId }: Props) {
           <MaterialCommunityIcons name="arrow-up-bold-outline" size={30} color={color} style={{ marginTop: -1 }}/>
         )}
         onPress={() => {}}
+        style={styles.voteButton}
         disabled={itemToRender === undefined}
       />
     
@@ -65,7 +66,6 @@ export default function Story({ item, itemId }: Props) {
               <Text variant="bodyLarge">
                 {itemIsLoading ? 'Loading...' : 'Failed to load'}
               </Text>
-              <Text variant="bodyMedium"> </Text>
             </View>
           )}
         </View>
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     display: 'flex',
-    alignItems: 'center',
     width: '100%',
+    gap: 6,
   },
   surface: {
     padding: 4,
@@ -95,6 +95,10 @@ const styles = StyleSheet.create({
   surfaceRow: {
     flexDirection: 'row',
     gap: 4,
+  },
+  voteButton: {
+    margin: 0,
+    marginTop: 8,
   },
   imageContainer: {
     width: 44,
