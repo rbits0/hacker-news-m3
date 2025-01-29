@@ -31,7 +31,7 @@ export default function Story({ item }: Props) {
         disabled={item === undefined}
       />
     
-      <Surface style={[styles.surface, { height }]}>
+      <Surface style={[styles.surface]}>
         <Surface elevation={3} style={styles.imageContainer} mode="flat">
           <OptionalLink href={item?.url as ExternalPathString | undefined} enabled={true}>
             <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
@@ -66,12 +66,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 4,
     flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   button: {
   },
   imageContainer: {
-    aspectRatio: 1,
+    width: 44,
+    height: 44,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
