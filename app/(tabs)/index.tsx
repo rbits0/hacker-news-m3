@@ -1,8 +1,9 @@
 import Story from '@/components/Story';
 import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery } from '@/store/services/hackerNews';
 import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View, ViewToken } from 'react-native';
+import { FlatList, StyleSheet, useWindowDimensions, View, ViewToken } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { LARGE_WIDTH } from '../_layout';
 
 
 const NUM_STORIES_PER_PAGE = 20;
@@ -16,6 +17,7 @@ export default function Index() {
     isSuccess: itemsQueryIsSuccess,
     isLoading: itemsAreLoading,
   } = useGetFrontPageIdsByStoriesTypeQuery(StoriesType.Top);
+  const { width } = useWindowDimensions();
 
   // Only load a certain number of stories at a time
   const [numStories, setNumStories] = useState(NUM_STORIES_PER_PAGE);
@@ -51,7 +53,7 @@ export default function Index() {
         renderItem={({ item }) => <Story itemId={item} />}
         onViewableItemsChanged={onViewableItemsChanged}
         contentContainerStyle={styles.innerList}
-        style={styles.list}
+        style={[styles.list, { padding: width < LARGE_WIDTH ? 6 : 12 }]}
       />
     </View>
   );
@@ -62,7 +64,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 6,
   },
   list: {
     width: '100%',
