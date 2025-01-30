@@ -2,7 +2,7 @@ import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link } from 'expo-router';
 import React from 'react';
-import { PixelRatio, StyleSheet, View } from 'react-native';
+import { PixelRatio, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
@@ -15,7 +15,6 @@ interface Props {
 
 export default function Story({ item, itemId }: Props) {
   const theme = useTheme();
-  let fontScale = PixelRatio.getFontScale();
 
   const {
     data: fetchedItem,
@@ -29,10 +28,6 @@ export default function Story({ item, itemId }: Props) {
   const itemUrl = itemToRender ? `https://news.ycombinator.com/item?id=${itemToRender.id}` : undefined;
 
   
-  const height = fontScale * (
-      theme.fonts.bodyLarge.lineHeight + theme.fonts.bodyMedium.lineHeight
-    ) + 6;
-
   return (
     <View style={styles.container}>
 
@@ -55,7 +50,7 @@ export default function Story({ item, itemId }: Props) {
           {itemToRender ? (
             <Surface elevation={3} style={styles.imageContainer} mode="flat">
               <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
-                <MaterialCommunityIcons name="link" color={theme.colors.primary} size={height - 25} />
+                <MaterialCommunityIcons name="link" color={theme.colors.primary} size={31} />
               </OptionalLink>
             </Surface>
           ) : null}
