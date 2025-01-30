@@ -56,10 +56,8 @@ export default function Story({ item, itemId }: Props) {
           ) : null}
 
           {itemToRender ? (
-            <Link href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
-              <View>
-                <Text variant="bodyLarge" >{itemToRender.title}</Text>
-              </View>
+            <Link style={styles.titleLink} href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
+              <Text variant="bodyLarge" >{itemToRender.title}</Text>
             </Link>
           ) : (
             <View style={styles.noItemView}>
@@ -110,6 +108,9 @@ const styles = StyleSheet.create({
   },
   noItemView: {
     marginLeft: 4
+  },
+  titleLink: {
+    flex: 1,
   },
   commentText: {
     margin: 4,
