@@ -2,7 +2,7 @@ import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link } from 'expo-router';
 import React from 'react';
-import { PixelRatio, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';

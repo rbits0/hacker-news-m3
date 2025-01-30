@@ -1,11 +1,8 @@
 import Story from '@/components/Story';
-import { RootState } from '@/store';
-import Item from '@/store/Item';
-import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery, useGetItemByIdQuery } from '@/store/services/hackerNews';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery } from '@/store/services/hackerNews';
+import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View, ViewToken } from 'react-native';
-import { Text, Button, useTheme } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useTheme } from 'react-native-paper';
 
 
 const NUM_STORIES_PER_PAGE = 20;
