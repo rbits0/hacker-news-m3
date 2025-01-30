@@ -2,7 +2,7 @@ import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link } from 'expo-router';
 import React from 'react';
-import { NativeSyntheticEvent, PixelRatio, StyleSheet, TextLayoutEventData, View } from 'react-native';
+import { PixelRatio, StyleSheet, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
@@ -34,16 +34,20 @@ export default function Story({ item, itemId }: Props) {
 
   return (
     <View style={styles.container}>
-      <IconButton
-        mode="contained"
-        size={22}
-        icon={({ size, color }) => (
-          <MaterialCommunityIcons name="arrow-up-bold-outline" size={30} color={color} style={{ marginTop: -1 }}/>
-        )}
-        onPress={() => {}}
-        style={styles.voteButton}
-        disabled={itemToRender === undefined}
-      />
+
+      <View>
+        <IconButton
+          mode="contained"
+          size={22}
+          icon={({ size, color }) => (
+            <MaterialCommunityIcons name="arrow-up-bold-outline" size={30} color={color} style={{ marginTop: -1 }}/>
+          )}
+          onPress={() => {}}
+          style={styles.voteButton}
+          disabled={itemToRender === undefined}
+        />
+        <Text variant="bodyLarge" style={styles.scoreText}>{itemToRender?.score}</Text>
+      </View>
     
       <Surface style={[styles.surface]}>
         <View style={[styles.surfaceRow]}>
@@ -111,6 +115,10 @@ const styles = StyleSheet.create({
   },
   titleLink: {
     flex: 1,
+  },
+  scoreText: {
+    textAlign: "center",
+    marginTop: 4,
   },
   commentText: {
     margin: 4,
