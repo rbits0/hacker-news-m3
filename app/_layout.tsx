@@ -3,6 +3,7 @@ import { configureFonts, MD3DarkTheme, PaperProvider } from 'react-native-paper'
 import { Provider } from 'react-redux';
 import store from '@/store';
 import { Platform, useWindowDimensions } from 'react-native';
+import { loadSettings } from '@/store/slices/settings';
 
 
 export const LARGE_WIDTH = 700;
@@ -45,6 +46,8 @@ export default function RootLayout() {
     ...MD3DarkTheme,
     fonts: configureFonts({ config: fontConfig }),
   }
+
+  store.dispatch(loadSettings());
 
 
   return (
