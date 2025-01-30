@@ -67,6 +67,11 @@ export const MaterialSwitchListItem = ({
   const [active, setActive] = useState(selected);
   const [isPressed, setIsPressed] = useState(false);
 
+  const callbackFunction = () => {
+    onSwitchPress();
+    setIsPressed(false);
+  };
+
   //#region
   const pan = Gesture.Pan()
     .activateAfterLongPress(100)
@@ -203,10 +208,7 @@ export const MaterialSwitchListItem = ({
     opacity: 0.18,
     justifyContent: 'center',
   }));
-  const callbackFunction = () => {
-    onSwitchPress();
-    setIsPressed(false);
-  };
+
   const changeSwitch = (withCallback: boolean) => {
     if (active) {
       handleHeight.value = withTiming(16, { duration: 100 });
