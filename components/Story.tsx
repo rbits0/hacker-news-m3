@@ -26,6 +26,7 @@ export default function Story({ item, itemId }: Props) {
   });
 
   const itemToRender = fetchedItem ? fetchedItem : item;
+  const itemUrl = itemToRender ? `https://news.ycombinator.com/item?id=${itemToRender.id}` : undefined;
 
   
   const height = fontScale * (
@@ -60,7 +61,7 @@ export default function Story({ item, itemId }: Props) {
           ) : null}
 
           {itemToRender ? (
-            <Link style={styles.titleLink} href={`https://news.ycombinator.com/item?id=${itemToRender.id}`}>
+            <Link style={styles.titleLink} href={itemUrl! as ExternalPathString}>
               <Text variant="bodyLarge" >{itemToRender.title}</Text>
             </Link>
           ) : (
@@ -72,9 +73,11 @@ export default function Story({ item, itemId }: Props) {
           )}
         </View>
       
-        <Text variant="bodyMedium" style={[styles.commentText, { color: theme.colors.onSurfaceVariant }]}>
-          {itemToRender ? `${itemToRender.descendants} comments` : ' '}
-        </Text>
+        <OptionalLink href={itemUrl as ExternalPathString | undefined}>
+          <Text variant="bodyMedium" style={[styles.commentText, { color: theme.colors.onSurfaceVariant }]}>
+            {itemToRender ? `${itemToRender.descendants} comments` : ' '}
+          </Text>
+        </OptionalLink>
 
       </Surface>
     </View>
