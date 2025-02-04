@@ -1,0 +1,11 @@
+<script>
+  async function test() {
+    const response = await HackerNewsCORS.fetch('https://news.ycombinator.com');
+    console.dir(response);
+  }
+</script>
+
+
+<body>
+  <button onclick="test()">Test</button>
+</body>
