@@ -10,12 +10,13 @@ export default function TabLayout() {
       tabBar={props => <TabBar {...props} />}
     >
       <Tabs.Screen
-        name="index"
+        name="(home)"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size}/>
-          )
+          ),
+          header: () => <></>,
         }}
       />
       <Tabs.Screen
@@ -24,7 +25,7 @@ export default function TabLayout() {
           title: 'Settings',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cog" color={color} size={size}/>
-          )
+          ),
         }}
       />
     </Tabs>

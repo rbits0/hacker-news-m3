@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function SettingsPage() {
   const theme = useTheme();
-  // const [settings, modifySetting, toggleSetting] = useSettings();
   const { settings, isLoaded: settingsIsLoaded } = useSelector((state: RootState) => state.settings);
   const dispatch = useDispatch();
 

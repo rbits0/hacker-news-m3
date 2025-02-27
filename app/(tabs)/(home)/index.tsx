@@ -3,7 +3,7 @@ import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery } from '@/store/servi
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, useWindowDimensions, View, ViewToken } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { LARGE_WIDTH } from '../_layout';
+import { LARGE_WIDTH } from '@/app/_layout';
 
 
 const NUM_STORIES_PER_PAGE = 20;
