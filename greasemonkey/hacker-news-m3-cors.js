@@ -6,7 +6,7 @@
 // @author       rbits
 // @icon         https://news.ycombinator.com/y18.svg
 // @match        *://localhost*
-// @match        file:///*
+// @match        file:///*.html
 // @connect      news.ycombinator.com
 // @grant        GM.xmlHttpRequest
 // @license      GPL3
