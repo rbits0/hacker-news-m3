@@ -12,15 +12,18 @@ interface State {
   isLoaded: boolean,
 }
 
-const DEFAULT_SETTINGS: Settings = {
-  displayVotes: true,
-};
+// React Native does not support structuredClone()
+function defaultSettings(): Settings {
+  return {
+    displayVotes: true,
+  };
+}
 
 
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState: {
-    settings: structuredClone(DEFAULT_SETTINGS),
+    settings: defaultSettings(),
     isLoaded: false,
   },
   reducers: {
@@ -81,7 +84,7 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
   }
 
   // Initialise settings
-  const json = JSON.stringify(DEFAULT_SETTINGS);
+  const json = JSON.stringify(defaultSettings());
 
   try {
     await AsyncStorage.setItem('settings', json);
@@ -89,7 +92,7 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
     console.error('Failed to store settings');
   }
 
-  dispatch(_settingsLoaded(structuredClone(DEFAULT_SETTINGS)));
+  dispatch(_settingsLoaded(defaultSettings()));
 }
 
 
