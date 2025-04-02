@@ -1,4 +1,8 @@
-# Welcome to your Expo app 👋
+# hacker-news-m3
+
+[Hacker News](https://news.ycombinator.com) client using Material Design 3.
+
+![Screenshot](preview.png)
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
