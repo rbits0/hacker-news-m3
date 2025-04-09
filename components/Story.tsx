@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
   },
   detailsRow: {
     flexDirection: 'row',
-    gap: 4,
+    gap: 8,
+    margin: 4,
   },
   voteButton: {
     margin: 0,
@@ -141,6 +142,5 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   detailsText: {
-    margin: 4,
   },
 });
