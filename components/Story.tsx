@@ -25,7 +25,12 @@ export default function Story({ item, itemId }: Props) {
   });
 
   const itemToRender = fetchedItem ? fetchedItem : item;
-  const itemUrl = itemToRender ? `/comments/${itemToRender.id}` as Route : undefined;
+  const itemUrl = itemToRender
+    ? `/comments/${itemToRender.id}` as Route
+    : undefined;
+  const userUrl = itemToRender
+    ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
+    : undefined;
 
   
   return (
@@ -68,11 +73,19 @@ export default function Story({ item, itemId }: Props) {
           )}
         </View>
       
-        <OptionalLink href={itemUrl}>
-          <Text variant="bodyMedium" style={[styles.commentText, { color: theme.colors.onSurfaceVariant }]}>
-            {itemToRender ? `${itemToRender.descendants} comments` : ' '}
-          </Text>
-        </OptionalLink>
+        <View style={styles.detailsRow}>
+          <OptionalLink href={itemUrl}>
+            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+              {itemToRender ? `${itemToRender.descendants} comments` : ' '}
+            </Text>
+          </OptionalLink>
+
+          <OptionalLink href={userUrl}>
+            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+              {itemToRender ? itemToRender.by : ' '}
+            </Text>
+          </OptionalLink>
+        </View>
 
       </Surface>
     </View>
@@ -93,6 +106,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   surfaceRow: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  detailsRow: {
     flexDirection: 'row',
     gap: 4,
   },
@@ -118,7 +135,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 4,
   },
-  commentText: {
+  detailsText: {
     margin: 4,
   },
 });
