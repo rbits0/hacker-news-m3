@@ -1,6 +1,6 @@
 import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ExternalPathString, Link } from 'expo-router';
+import { ExternalPathString, Link, Route } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
@@ -25,7 +25,7 @@ export default function Story({ item, itemId }: Props) {
   });
 
   const itemToRender = fetchedItem ? fetchedItem : item;
-  const itemUrl = itemToRender ? `https://news.ycombinator.com/item?id=${itemToRender.id}` : undefined;
+  const itemUrl = itemToRender ? `/comments/${itemToRender.id}` as Route : undefined;
 
   
   return (
@@ -56,7 +56,7 @@ export default function Story({ item, itemId }: Props) {
           ) : null}
 
           {itemToRender ? (
-            <Link style={styles.titleLink} href={itemUrl! as ExternalPathString}>
+            <Link style={styles.titleLink} href={itemUrl!}>
               <Text variant="bodyLarge" >{itemToRender.title}</Text>
             </Link>
           ) : (
@@ -68,7 +68,7 @@ export default function Story({ item, itemId }: Props) {
           )}
         </View>
       
-        <OptionalLink href={itemUrl as ExternalPathString | undefined}>
+        <OptionalLink href={itemUrl}>
           <Text variant="bodyMedium" style={[styles.commentText, { color: theme.colors.onSurfaceVariant }]}>
             {itemToRender ? `${itemToRender.descendants} comments` : ' '}
           </Text>
