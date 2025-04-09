@@ -15,7 +15,7 @@ export default function CommentsScreen() {
   } = useGetItemByIdQuery(parseInt(id));
 
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Story itemId={parseInt(id)} />
       {fetchedItem?.kids?.map(id => `${id}, `)}
     </View>
@@ -25,6 +25,7 @@ export default function CommentsScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
   }
 });
