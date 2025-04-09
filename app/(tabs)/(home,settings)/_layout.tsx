@@ -1,4 +1,4 @@
-// From https://github.com/astrojarred/tabs-v-stacks/blob/main/app/(tabs)/(home%2Cexplore)/_layout.tsx
+// From https://github.com/expo/router/discussions/380#discussioncomment-11428125
 
 import NavigationBar from "@/components/NavigationBar";
 import { Stack } from "expo-router";
