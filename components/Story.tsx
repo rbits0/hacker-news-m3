@@ -52,13 +52,18 @@ export default function Story({ item, itemId }: Props) {
     
       <Surface style={[styles.surface]}>
         <View style={[styles.surfaceRow]}>
-          {itemToRender ? (
-            <Surface elevation={3} style={styles.imageContainer} mode="flat">
-              <OptionalLink href={itemToRender?.url as ExternalPathString | undefined} enabled={true}>
-                <MaterialCommunityIcons name="link" color={theme.colors.primary} size={31} />
-              </OptionalLink>
-            </Surface>
-          ) : null}
+          <Surface elevation={3} style={styles.imageContainer} mode="flat">
+            <OptionalLink
+              href={itemToRender?.url as ExternalPathString | undefined}
+              enabled={itemToRender != undefined}
+            >
+              <MaterialCommunityIcons
+                name="link"
+                color={itemToRender ? theme.colors.primary : theme.colors.onSurfaceDisabled}
+                size={31}
+              />
+            </OptionalLink>
+          </Surface>
 
           {itemToRender ? (
             <Link style={styles.titleLink} href={itemUrl!}>
