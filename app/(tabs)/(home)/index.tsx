@@ -6,6 +6,8 @@ import { useTheme } from 'react-native-paper';
 import { LARGE_WIDTH } from '@/app/_layout';
 
 
+// Number of stories to load at a time.
+// A "page" refers to a batch of stories being loaded
 const NUM_STORIES_PER_PAGE = 20;
 
 
@@ -19,11 +21,12 @@ export default function Index() {
   } = useGetFrontPageIdsByStoriesTypeQuery(StoriesType.Top);
   const { width } = useWindowDimensions();
 
-  // Only load a certain number of stories at a time
+  // Only load a certain number of stories initially
   const [numStories, setNumStories] = useState(NUM_STORIES_PER_PAGE);
   const itemIdsToRender = itemIds?.slice(0, numStories);
 
 
+  // Load new items on scroll
   // useCallback with empty dependency list, since FlatList doesn't like functions changing
   const onViewableItemsChanged = useCallback(({ changed, viewableItems }: {
     changed: ViewToken<number>[],
