@@ -6,14 +6,17 @@ import { StyleSheet, View } from 'react-native';
 import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
+import TextBody from './TextBody';
 
 
 interface Props {
   item?: Item,
   itemId?: number,
+  showBody?: boolean,
+  disableCommentsLink?: boolean,
 }
 
-export default function Story({ item, itemId }: Props) {
+export default function Story({ item, itemId, showBody, disableCommentsLink }: Props) {
   const theme = useTheme();
 
   const {
@@ -65,21 +68,23 @@ export default function Story({ item, itemId }: Props) {
             </OptionalLink>
           </Surface>
 
-          {itemToRender ? (
-            <Link style={styles.titleLink} href={itemUrl!}>
-              <Text variant="bodyLarge" >{itemToRender.title}</Text>
-            </Link>
-          ) : (
-            <View style={styles.noItemView}>
-              <Text variant="bodyLarge">
-                {itemIsLoading ? 'Loading...' : 'Failed to load'}
-              </Text>
-            </View>
-          )}
+          <OptionalLink href={itemUrl!} enabled={itemToRender && !disableCommentsLink}>
+            <Text variant="bodyLarge" >{
+              itemToRender
+                ? itemToRender.title
+                : itemIsLoading
+                  ? 'Loading'
+                  : 'Failed to load'
+              }</Text>
+          </OptionalLink>
         </View>
+
+        {showBody && itemToRender?.text ? (
+          <TextBody text={itemToRender.text} />
+        ) : null}
       
         <View style={styles.detailsRow}>
-          <OptionalLink href={itemUrl}>
+          <OptionalLink href={itemUrl} enabled={!disableCommentsLink}>
             <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
               {itemToRender ? `${itemToRender.descendants} comments` : ' '}
             </Text>
@@ -133,9 +138,6 @@ const styles = StyleSheet.create({
   },
   noItemView: {
     marginLeft: 4
-  },
-  titleLink: {
-    flex: 1,
   },
   scoreText: {
     textAlign: "center",

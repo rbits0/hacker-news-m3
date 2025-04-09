@@ -16,7 +16,7 @@ export default function CommentsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Story itemId={parseInt(id)} />
+      <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />
       {fetchedItem?.kids?.map(id => `${id}, `)}
     </View>
   )
