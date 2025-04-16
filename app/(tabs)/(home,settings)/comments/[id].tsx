@@ -2,7 +2,7 @@ import Story from "@/components/Story";
 import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import { useLocalSearchParams } from "expo-router"
 import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
 
 export default function CommentsScreen() {
@@ -17,7 +17,7 @@ export default function CommentsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />
-      {fetchedItem?.kids?.map(id => `${id}, `)}
+      <Text>{fetchedItem?.kids?.map(id => `${id}, `)}</Text>
     </View>
   )
 }
