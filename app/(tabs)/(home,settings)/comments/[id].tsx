@@ -19,27 +19,21 @@ export default function CommentsScreen() {
     isError: itemIsError,
   } = useGetItemByIdQuery(parseInt(id));
 
-  const data: (number | 'HEADER')[] = fetchedItem?.kids
-    ? ['HEADER', ...fetchedItem.kids]
-    : ['HEADER'];
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
 
       <DynamicScrollList
-        data={data}
-        renderItem={
-          ({ item }) => item === 'HEADER' ? (
-            <View style={styles.storyView}>
-              <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />
-            </View>
-          ) : (
-            <Comment itemId={item} />
-          )
-        }
+        data={fetchedItem?.kids}
+        renderItem={({ item }) => <Comment itemId={item} />}
         itemsPerPage={NUM_COMMENTS_PER_PAGE}
         contentContainerStyle={styles.innerList}
         style={[styles.list]}
+        ListHeaderComponent={
+          <View style={styles.storyView}>
+            <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />
+          </View>
+        }
       />
 
     </View>
