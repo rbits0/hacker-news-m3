@@ -2,24 +2,20 @@
 // Uses React Native FlatList
 
 import React, { useCallback, useState } from "react"
-import { FlatList, ListRenderItem, StyleProp, ViewStyle, ViewToken } from "react-native"
+import { FlatList, FlatListProps, ListRenderItem, StyleProp, ViewStyle, ViewToken } from "react-native"
 
 
-interface DynamicScrollListProps<ItemT> {
+interface DynamicScrollListProps<ItemT> extends FlatListProps<ItemT> {
   data: ItemT[] | null | undefined,
-  renderItem: ListRenderItem<ItemT>,
   itemsPerPage: number,
-  contentContainerStyle?: StyleProp<ViewStyle>,
-  style: StyleProp<ViewStyle>,
 }
 
-export default function DynamicScrollList<ItemT>({
-  data,
-  renderItem,
-  itemsPerPage,
-  contentContainerStyle,
-  style,
-}: DynamicScrollListProps<ItemT>) {
+export default function DynamicScrollList<ItemT>(props: DynamicScrollListProps<ItemT>) {
+  const {
+    data,
+    itemsPerPage,
+  } = props;
+
   // Only load a certain number of items initially
   const [numItems, setNumItems] = useState(itemsPerPage);
   const itemsToRender = data?.slice(0, numItems);
@@ -42,16 +38,18 @@ export default function DynamicScrollList<ItemT>({
         return numItems;
       }
     });
+
+    if (props.onViewableItemsChanged) {
+      props.onViewableItemsChanged({ changed, viewableItems });
+    }
   }, []);
 
 
   return (
     <FlatList
+      {...props}
       data={itemsToRender}
-      renderItem={renderItem}
       onViewableItemsChanged={onViewableItemsChanged}
-      contentContainerStyle={contentContainerStyle}
-      style={style}
     />
   )
 }
