@@ -9,6 +9,7 @@ import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
+import LinkImage from './LinkImage';
 
 
 interface Props {
@@ -38,6 +39,7 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
   const userUrl = itemToRender
     ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
     : undefined;
+  const articleUrl = itemToRender?.url as ExternalPathString | undefined;
 
   
   return (
@@ -53,19 +55,9 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
     
       <Surface style={[styles.surface]}>
         <View style={[styles.surfaceRow]}>
-          <Surface elevation={3} style={styles.imageContainer} mode="flat">
-            <OptionalLink
-              href={itemToRender?.url as ExternalPathString | undefined}
-              enabled={itemToRender != undefined}
-            >
-              <MaterialCommunityIcons
-                name="link"
-                color={itemToRender ? theme.colors.primary : theme.colors.onSurfaceDisabled}
-                size={31}
-              />
-            </OptionalLink>
-          </Surface>
+          <LinkImage href={articleUrl}/>
 
+          {/* Title */}
           <OptionalLink href={itemUrl!} enabled={itemToRender && !disableCommentsLink}>
             <Text variant="bodyLarge" >{
               itemToRender
@@ -123,14 +115,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     margin: 4,
-  },
-  imageContainer: {
-    width: 44,
-    height: 44,
-    margin: 2,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   noItemView: {
     marginLeft: 4
