@@ -7,6 +7,7 @@ import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
+import VoteButtonLarge from './VoteButtonLarge';
 
 
 interface Props {
@@ -39,19 +40,11 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
   return (
     <View style={styles.container}>
 
-      <View>
-        <IconButton
-          mode="contained"
-          size={22}
-          icon={({ size, color }) => (
-            <MaterialCommunityIcons name="arrow-up-bold-outline" size={30} color={color} style={{ marginTop: -1 }}/>
-          )}
-          onPress={() => {}}
-          style={styles.voteButton}
-          disabled={itemToRender === undefined}
-        />
-        <Text variant="bodyLarge" style={styles.scoreText}>{itemToRender?.score}</Text>
-      </View>
+      <VoteButtonLarge
+        disabled={itemToRender == undefined}
+        score={itemToRender?.score}
+        onPress={() => { /* TODO: Vote */ }}
+      />
     
       <Surface style={[styles.surface]}>
         <View style={[styles.surfaceRow]}>
@@ -124,10 +117,6 @@ const styles = StyleSheet.create({
     gap: 8,
     margin: 4,
   },
-  voteButton: {
-    margin: 0,
-    marginTop: 8,
-  },
   imageContainer: {
     width: 44,
     height: 44,
@@ -138,10 +127,6 @@ const styles = StyleSheet.create({
   },
   noItemView: {
     marginLeft: 4
-  },
-  scoreText: {
-    textAlign: "center",
-    marginTop: 4,
   },
   detailsText: {
   },
