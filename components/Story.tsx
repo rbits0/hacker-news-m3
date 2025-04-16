@@ -3,11 +3,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link, Route } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton, Surface, Text, useTheme } from 'react-native-paper';
+import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
+import { useAppSelector } from '@/store/hooks';
 
 
 interface Props {
@@ -19,6 +20,8 @@ interface Props {
 
 export default function Story({ item, itemId, showBody, disableCommentsLink }: Props) {
   const theme = useTheme();
+  
+  const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
 
   const {
     data: fetchedItem,
@@ -40,11 +43,13 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
   return (
     <View style={styles.container}>
 
-      <VoteButtonLarge
-        disabled={itemToRender == undefined}
-        score={itemToRender?.score}
-        onPress={() => { /* TODO: Vote */ }}
-      />
+      {displayVotes ? (
+        <VoteButtonLarge
+          disabled={itemToRender == undefined}
+          score={itemToRender?.score}
+          onPress={() => { /* TODO: Vote */ }}
+        />
+      ) : null}
     
       <Surface style={[styles.surface]}>
         <View style={[styles.surfaceRow]}>
