@@ -78,7 +78,9 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
         </View>
 
         {showBody && itemToRender?.text ? (
-          <TextBody text={itemToRender.text} />
+          <View style={styles.textBodyView}>
+            <TextBody text={itemToRender.text} />
+          </View>
         ) : null}
       
         <View style={styles.detailsRow}>
@@ -134,5 +136,8 @@ const styles = StyleSheet.create({
     marginLeft: 4
   },
   detailsText: {
+  },
+  textBodyView: {
+    margin: 6,
   },
 });
