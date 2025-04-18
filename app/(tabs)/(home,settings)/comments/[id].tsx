@@ -2,7 +2,7 @@ import Story from "@/components/Story";
 import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import { useLocalSearchParams } from "expo-router"
 import { View, StyleSheet, useWindowDimensions } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Divider, useTheme } from "react-native-paper";
 import Comment from "@/components/Comment";
 import DynamicScrollList from "@/components/DynamicScrollList";
 import { LARGE_WIDTH } from "@/app/_layout";
@@ -33,8 +33,9 @@ export default function CommentsScreen() {
         contentContainerStyle={styles.innerList}
         style={[styles.list, { padding: width < LARGE_WIDTH ? 6 : 12 }]}
         ListHeaderComponent={
-          <View style={styles.storyView}>
+          <View>
             <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />
+            <Divider style={styles.divider} />
           </View>
         }
       />
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
   innerList: {
     gap: 10,
   },
-  storyView: {
-    paddingBottom: 10,
+  divider: {
+    marginTop: 8,
+    marginBottom: -2 // Combined with gap of 10 makes this 8
   },
 });
