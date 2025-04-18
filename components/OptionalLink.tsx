@@ -1,16 +1,18 @@
-import { Href, Link } from 'expo-router';
+import { Href, Link, LinkProps } from 'expo-router';
 import React from 'react';
 import { PropsWithChildren } from 'react';
 
 
-interface Props {
+interface OptionalLinkProps extends Omit<LinkProps, 'href'> {
   enabled?: boolean,
   href: Href | undefined | null,
 }
 
 export default function OptionalLink(
-  { enabled, href, children }: PropsWithChildren<Props>
+  props: PropsWithChildren<OptionalLinkProps>
 ) {
+  let { enabled, href, children } = props;
+
   if (enabled === undefined) {
     enabled = true;
   }
@@ -21,6 +23,7 @@ export default function OptionalLink(
   if (enabled) {
     return (
       <Link
+        {...props}
         href={href!}
       >
         {children}
