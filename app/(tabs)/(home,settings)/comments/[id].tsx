@@ -1,10 +1,11 @@
 import Story from "@/components/Story";
 import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import { useLocalSearchParams } from "expo-router"
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 import Comment from "@/components/Comment";
 import DynamicScrollList from "@/components/DynamicScrollList";
+import { LARGE_WIDTH } from "@/app/_layout";
 
 
 const NUM_COMMENTS_PER_PAGE = 20;
@@ -12,7 +13,9 @@ const NUM_COMMENTS_PER_PAGE = 20;
 
 export default function CommentsScreen() {
   const theme = useTheme();
+  const { width } = useWindowDimensions();
   const { id }: { id: string } = useLocalSearchParams();
+
   const {
     data: fetchedItem,
     isLoading: itemIsLoading,
@@ -28,7 +31,7 @@ export default function CommentsScreen() {
         renderItem={({ item }) => <Comment itemId={item} />}
         itemsPerPage={NUM_COMMENTS_PER_PAGE}
         contentContainerStyle={styles.innerList}
-        style={[styles.list]}
+        style={[styles.list, { padding: width < LARGE_WIDTH ? 6 : 12 }]}
         ListHeaderComponent={
           <View style={styles.storyView}>
             <Story itemId={parseInt(id)} showBody={true} disableCommentsLink={true} />

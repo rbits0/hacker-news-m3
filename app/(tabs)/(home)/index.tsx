@@ -14,6 +14,7 @@ const NUM_STORIES_PER_PAGE = 20;
 
 export default function Index() {
   const theme = useTheme();
+  const { width } = useWindowDimensions();
 
   const {
     data: itemIds,
@@ -21,7 +22,6 @@ export default function Index() {
     isSuccess: itemsQueryIsSuccess,
     isLoading: itemsAreLoading,
   } = useGetFrontPageIdsByStoriesTypeQuery(StoriesType.Top);
-  const { width } = useWindowDimensions();
 
 
   return (
