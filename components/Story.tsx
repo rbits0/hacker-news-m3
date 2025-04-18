@@ -2,7 +2,7 @@ import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link, Route } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text as TextRN } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
@@ -58,8 +58,12 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
           <LinkImage href={articleUrl}/>
 
           {/* Title */}
-          <OptionalLink href={itemUrl!} enabled={itemToRender && !disableCommentsLink}>
-            <Text variant="bodyLarge" >{
+          <OptionalLink
+            href={itemUrl!}
+            enabled={itemToRender && !disableCommentsLink}
+            style={styles.titleLink}
+          >
+            <Text variant="bodyLarge" style={styles.titleText} >{
               itemToRender
                 ? itemToRender.title
                 : itemIsLoading
@@ -123,5 +127,11 @@ const styles = StyleSheet.create({
   },
   textBodyView: {
     margin: 6,
+  },
+  titleText: {
+    flexShrink: 1,
+  },
+  titleLink: {
+    flex: 1,
   },
 });
