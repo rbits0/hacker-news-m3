@@ -81,14 +81,14 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         <Text variant="bodyMedium" style={styles.italicText}>
           {element.textContent}
         </Text>
-      )
+      );
 
     default:
       return (
-        <Text variant="bodyMedium">
+        <Text variant="bodyMedium" style={styles.text}>
           {element.textContent}
         </Text>
-      )
+      );
     
   }
 }
@@ -108,7 +108,7 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
   }).toArray();
 
   return (
-    <Text variant="bodyMedium">
+    <Text variant="bodyMedium" style={styles.text}>
       {jsxChildren}
     </Text>
   );
@@ -116,6 +116,10 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
 
 
 const styles = StyleSheet.create({
+  text: {
+    marginTop: 4,
+    marginBottom: 4,
+  },
   link: {
     textDecorationLine: 'underline',
   },
