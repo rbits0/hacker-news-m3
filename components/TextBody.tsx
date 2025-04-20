@@ -102,7 +102,7 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         console.error('Found <pre> element without child <code> element')
 
         return (
-          <Text variant="bodyMedium" style={styles.text}>
+          <Text variant="bodyMedium" style={styles.paragraph}>
             {element.textContent}
           </Text>
         );
@@ -110,7 +110,7 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
 
     default:
       return (
-        <Text variant="bodyMedium" style={styles.text}>
+        <Text variant="bodyMedium" style={styles.paragraph}>
           {element.textContent}
         </Text>
       );
@@ -133,7 +133,7 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
   }).toArray();
 
   return (
-    <Text variant="bodyMedium" style={styles.text}>
+    <Text variant="bodyMedium" style={styles.paragraph}>
       {jsxChildren}
     </Text>
   );
@@ -141,7 +141,7 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
 
 
 const styles = StyleSheet.create({
-  text: {
+  paragraph: {
     marginTop: 4,
     marginBottom: 4,
   },
