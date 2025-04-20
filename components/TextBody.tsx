@@ -178,8 +178,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingTop: 6,
     paddingBottom: 6,
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   codeText: {
     fontFamily: 'monospace'
