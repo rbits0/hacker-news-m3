@@ -110,16 +110,16 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         console.error('Found <pre> element without child <code> element')
 
         return (
-          <Text variant="bodyMedium" style={styles.paragraph}>
-            {element.textContent}
+          <Text variant="bodyMedium" style={[styles.paragraph, styles.error]}>
+            {element.outerHTML}
           </Text>
         );
       }
 
     default:
       return (
-        <Text variant="bodyMedium" style={styles.paragraph}>
-          {element.textContent}
+        <Text variant="bodyMedium" style={[styles.paragraph, styles.error]}>
+          {element.outerHTML}
         </Text>
       );
     
@@ -165,5 +165,8 @@ const styles = StyleSheet.create({
   },
   codeText: {
     fontFamily: 'monospace'
+  },
+  error: {
+    color: 'red'
   },
 });
