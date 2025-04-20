@@ -1,4 +1,4 @@
-import { Text, useTheme } from "react-native-paper"
+import { Surface, Text, useTheme } from "react-native-paper"
 import he from "he"
 import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
@@ -83,6 +83,31 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         </Text>
       );
 
+    case 'PRE':
+      if (element.childElementCount === 1 && element.firstElementChild?.tagName === 'CODE') {
+        // Remove extra indentation
+        const textContent = element.firstElementChild.textContent || '';
+        const text = textContent.split('\n').map(
+          line => line.slice(2, line.length)
+        ).join('\n');
+
+        return (
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.elevation.level2 }]}>
+            <Text variant="bodyMedium" style={styles.codeText}>
+              {text}
+            </Text>
+          </Surface>
+        );
+      } else {
+        console.error('Found <pre> element without child <code> element')
+
+        return (
+          <Text variant="bodyMedium" style={styles.text}>
+            {element.textContent}
+          </Text>
+        );
+      }
+
     default:
       return (
         <Text variant="bodyMedium" style={styles.text}>
@@ -125,5 +150,12 @@ const styles = StyleSheet.create({
   },
   italicText: {
     fontStyle: 'italic',
+  },
+  codeBlock: {
+    borderRadius: 8,
+    padding: 4,
+  },
+  codeText: {
+    fontFamily: 'monospace'
   },
 });
