@@ -144,9 +144,9 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
 
         let textContent = (node.textContent || '')
         // If there's a \n at the start, remove it instead of replacing with space
-        if (jsxChildren.length === 0 && textContent[0] === '\n') {
-          textContent = textContent.slice(1);
-        }
+        // if (jsxChildren.length === 0 && textContent[0] === '\n') {
+        //   textContent = textContent.slice(1);
+        // }
         textContent = textContent.replaceAll('\n', ' ');
 
         jsxChildren.push(textContent);
@@ -176,7 +176,10 @@ const styles = StyleSheet.create({
   },
   codeBlock: {
     borderRadius: 8,
-    padding: 4,
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   codeText: {
     fontFamily: 'monospace'
