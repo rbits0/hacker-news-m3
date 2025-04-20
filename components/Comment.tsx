@@ -53,16 +53,17 @@ export default function Comment({ item, itemId }: Props) {
       ) : null}
     
       <Surface style={[styles.surface]}>
-        <View style={styles.textBodyView}>
-          <TextBody text={itemToRender?.text || ''} />
-        </View>
 
         <View style={styles.detailsRow}>
           <OptionalLink href={userUrl}>
-            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
               {itemToRender ? itemToRender.by : ' '}
             </Text>
           </OptionalLink>
+        </View>
+
+        <View style={styles.textBodyView}>
+          <TextBody text={itemToRender?.text || ''} />
         </View>
 
       </Surface>
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
   detailsRow: {
     flexDirection: 'row',
     gap: 8,
-    margin: 4,
+    marginLeft: 6,
+    marginTop: 4,
   },
   imageContainer: {
     width: 44,
