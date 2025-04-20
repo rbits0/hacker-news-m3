@@ -130,23 +130,29 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
 // Parse <p> element
 // Takes child nodes as argument instead of the <p> element itself
 function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Element {
-  let jsxChildren = children.map(node => {
+  let jsxChildren = [];
+
+  for (const node of children) {
     switch (node.nodeType) {
       case Node.ELEMENT_NODE:
-        return parseElement(node as Element, theme);
+        jsxChildren.push(parseElement(node as Element, theme));
+        break;
       case Node.TEXT_NODE:
       default:
         // Remove \n, since it should be ignored in HTML
-        // Replace it with a space instead (unless it's at the start where it is just removed)
+        // Replace it with a space instead
+
         let textContent = (node.textContent || '')
-        if (textContent[0] === '\n') {
+        // If there's a \n at the start, remove it instead of replacing with space
+        if (jsxChildren.length === 0 && textContent[0] === '\n') {
           textContent = textContent.slice(1);
         }
         textContent = textContent.replaceAll('\n', ' ');
 
-        return textContent;
+        jsxChildren.push(textContent);
+        break;
     }
-  }).toArray();
+  }
 
 
   return (
