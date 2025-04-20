@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "..";
+import { Platform } from "react-native";
 
 
 interface Settings {
   displayVotes: boolean,
+  commentsLargeVoteButton: boolean,
 }
 
 interface State {
@@ -16,6 +18,10 @@ interface State {
 function defaultSettings(): Settings {
   return {
     displayVotes: true,
+    commentsLargeVoteButton: Platform.select({
+      web: true,
+      default: false,
+    }),
   };
 }
 

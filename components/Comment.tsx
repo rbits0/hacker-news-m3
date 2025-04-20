@@ -22,6 +22,7 @@ export default function Comment({ item, itemId }: Props) {
   const theme = useTheme();
   
   const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
+  const largeVoteButton = useAppSelector(state => state.settings.settings.commentsLargeVoteButton);
 
   const {
     data: fetchedItem,
@@ -43,7 +44,7 @@ export default function Comment({ item, itemId }: Props) {
   return (
     <View style={styles.container}>
 
-      {displayVotes ? (
+      {displayVotes && largeVoteButton ? (
         <VoteButtonLarge
           disabled={itemToRender == undefined}
           score={itemToRender?.score}

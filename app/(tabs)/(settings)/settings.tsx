@@ -24,6 +24,14 @@ export default function SettingsPage() {
             onPress={() => dispatch(toggleSetting('displayVotes'))}
           />
 
+          <List.Subheader>Comments</List.Subheader>
+          <MaterialSwitchListItem
+            title="Large vote button next to comments"
+            selected={settings.commentsLargeVoteButton}
+            onPress={() => dispatch(toggleSetting('commentsLargeVoteButton'))}
+          />
+
+
         </List.Section>
       ) : null}
     </View>
