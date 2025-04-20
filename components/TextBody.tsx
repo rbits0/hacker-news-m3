@@ -6,9 +6,6 @@ import { StyleSheet, View } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
 
 
-let ONCE = false;
-
-
 interface Props {
   text: string,
 }
@@ -62,11 +59,9 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
     }
   }
 
-
-  if (!ONCE) {
-    ONCE = true;
-
-    console.dir(body);
+  if (!looseDone) {
+    const looseElement = parsePElement(looseNodes.values(), theme);
+    jsxElements.push(looseElement);
   }
 
   return jsxElements;
