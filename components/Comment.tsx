@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noItemView: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   detailsText: {
   },
