@@ -82,7 +82,13 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
     const storedSettings = await AsyncStorage.getItem('settings');
     if (storedSettings !== null) {
       // Settings already initialised
-      dispatch(_settingsLoaded(JSON.parse(storedSettings)));
+
+      // Add any missing fields to the settings
+      let parsedSettings = {
+        ...defaultSettings(),
+        ...JSON.parse(storedSettings),
+      }
+      dispatch(_settingsLoaded(parsedSettings));
       return;
     }
   } catch {

@@ -1,5 +1,5 @@
 import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
-import { RootState } from '@/store';
+import { useAppSelector } from '@/store/hooks';
 import { toggleSetting } from '@/store/slices/settings';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function SettingsPage() {
   const theme = useTheme();
-  const { settings, isLoaded: settingsIsLoaded } = useSelector((state: RootState) => state.settings);
+  const { settings, isLoaded: settingsIsLoaded } = useAppSelector(state => state.settings);
   const dispatch = useDispatch();
 
   return (
