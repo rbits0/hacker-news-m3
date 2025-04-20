@@ -1,8 +1,9 @@
-import { Text } from "react-native-paper"
+import { Text, useTheme } from "react-native-paper"
 import he from "he"
 import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { MD3Theme } from "react-native-paper/lib/typescript/types";
 
 
 interface Props {
@@ -10,9 +11,11 @@ interface Props {
 }
 
 export default function TextBody({ text }: Props) {
+  const theme = useTheme();
+
   const bodyList = useMemo(() => (
-    parseHTML(text)
-  ), [text]);
+    parseHTML(text, theme)
+  ), [text, theme]);
 
   return (
     <View>
@@ -23,7 +26,7 @@ export default function TextBody({ text }: Props) {
 
 
 // Parses HTML into a list of JSX elements
-function parseHTML(html: string): JSX.Element[] {
+function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   const body = doc.body.childNodes;
@@ -46,33 +49,36 @@ function parseHTML(html: string): JSX.Element[] {
         startDone = true;
       }
 
-      jsxElements.push(parseElement(node as Element));
+      jsxElements.push(parseElement(node as Element, theme));
     }
   }
 
-  const startElement = parsePElement(startText.values());
+  const startElement = parsePElement(startText.values(), theme);
   jsxElements.splice(0, 0, startElement);
 
   return jsxElements;
 }
 
 
-function parseElement(element: Element): JSX.Element {
+function parseElement(element: Element, theme: MD3Theme): JSX.Element {
   switch (element.tagName) {
 
     case 'P':
-      return parsePElement(element.childNodes.values());
+      return parsePElement(element.childNodes.values(), theme);
 
     case 'A':
       return (
-        <Link href={element.getAttribute('href') as ExternalPathString}>
+        <Link
+          href={element.getAttribute('href') as ExternalPathString}
+          style={[styles.link, { color: theme.colors.primary }]}
+        >
           {element.textContent}
         </Link>
       );
     
     case 'I':
       return (
-        <Text variant="bodyMedium" style={{} /* TODO: */ }>
+        <Text variant="bodyMedium" style={styles.italicText}>
           {element.textContent}
         </Text>
       )
@@ -90,13 +96,11 @@ function parseElement(element: Element): JSX.Element {
 
 // Parse <p> element
 // Takes child nodes as argument instead of the <p> element itself
-function parsePElement(children: ArrayIterator<Node>): JSX.Element {
-  console.log('parsePElement');
-
+function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Element {
   let jsxChildren = children.map(node => {
     switch (node.nodeType) {
       case Node.ELEMENT_NODE:
-        return parseElement(node as Element);
+        return parseElement(node as Element, theme);
       case Node.TEXT_NODE:
       default:
         return node.textContent;
@@ -109,3 +113,13 @@ function parsePElement(children: ArrayIterator<Node>): JSX.Element {
     </Text>
   );
 }
+
+
+const styles = StyleSheet.create({
+  link: {
+    textDecorationLine: 'underline',
+  },
+  italicText: {
+    fontStyle: 'italic',
+  },
+});
