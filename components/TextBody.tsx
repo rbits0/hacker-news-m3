@@ -6,6 +6,9 @@ import { StyleSheet, View } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
 
 
+let ONCE = false;
+
+
 interface Props {
   text: string,
 }
@@ -31,30 +34,40 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
   const doc = parser.parseFromString(html, 'text/html');
   const body = doc.body.childNodes;
 
-  let startText = [];
-  let startDone = false;
+  let looseNodes = [];
+  let looseDone = false;
   let jsxElements = []; 
 
   for (const node of body.values()) {
     if (
-      !startDone
-      && (node.nodeType === Node.TEXT_NODE || node.nodeName === 'A' || node.nodeName === 'I')
+      node.nodeType === Node.TEXT_NODE
+      || node.nodeName === 'A'
+      || node.nodeName === 'I'
     ) {
-      // Handle start text (which is not wrapped in <p>)
+      // Handle loose nodes (not wrapped in <p>)
       // Include all text nodes and <a> & <i> elements
-      startText.push(node);
+      looseNodes.push(node);
+      looseDone = false;
     } else {
-      if (!startDone) {
-        // Not in start anymore
-        startDone = true;
+      if (!looseDone) {
+        // Parse the loose nodes
+        const looseElement = parsePElement(looseNodes.values(), theme);
+        jsxElements.push(looseElement);
+
+        looseNodes = [];
+        looseDone = true;
       }
 
       jsxElements.push(parseElement(node as Element, theme));
     }
   }
 
-  const startElement = parsePElement(startText.values(), theme);
-  jsxElements.splice(0, 0, startElement);
+
+  if (!ONCE) {
+    ONCE = true;
+
+    console.dir(body);
+  }
 
   return jsxElements;
 }
