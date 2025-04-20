@@ -27,10 +27,6 @@ export default function TextBody({ text }: Props) {
 
 // Parses HTML into a list of JSX elements
 function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
-  // Remove \n, since it should be ignored in HTML
-  // Replace it with a space instead
-  html = html.replaceAll('\n', ' ');
-
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   const body = doc.body.childNodes;
@@ -140,9 +136,18 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
         return parseElement(node as Element, theme);
       case Node.TEXT_NODE:
       default:
-        return node.textContent;
+        // Remove \n, since it should be ignored in HTML
+        // Replace it with a space instead (unless it's at the start where it is just removed)
+        let textContent = (node.textContent || '')
+        if (textContent[0] === '\n') {
+          textContent = textContent.slice(1);
+        }
+        textContent = textContent.replaceAll('\n', ' ');
+
+        return textContent;
     }
   }).toArray();
+
 
   return (
     <Text variant="bodyMedium" style={styles.paragraph}>
