@@ -34,6 +34,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
   let looseNodes = [];
   let looseDone = false;
   let jsxElements = []; 
+  let key = 0;
 
   for (const node of body.values()) {
     if (
@@ -48,37 +49,45 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
     } else {
       if (!looseDone) {
         // Parse the loose nodes
-        const looseElement = parsePElement(looseNodes.values(), theme);
+        const looseElement = parsePElement(looseNodes.values(), theme, `${key}`);
         jsxElements.push(looseElement);
+        key += 1;
 
         looseNodes = [];
         looseDone = true;
       }
 
-      jsxElements.push(parseElement(node as Element, theme));
+      jsxElements.push(parseElement(node as Element, theme, `${key}`));
+      key += 1;
     }
   }
 
   if (!looseDone) {
-    const looseElement = parsePElement(looseNodes.values(), theme);
+    const looseElement = parsePElement(looseNodes.values(), theme, `${key}`);
     jsxElements.push(looseElement);
+    key += 1;
   }
 
   return jsxElements;
 }
 
 
-function parseElement(element: Element, theme: MD3Theme): JSX.Element {
+function parseElement(
+  element: Element,
+  theme: MD3Theme,
+  key: string
+): JSX.Element {
   switch (element.tagName) {
 
     case 'P':
-      return parsePElement(element.childNodes.values(), theme);
+      return parsePElement(element.childNodes.values(), theme, key);
 
     case 'A':
       return (
         <Link
           href={element.getAttribute('href') as ExternalPathString}
           style={[styles.link, { color: theme.colors.primary }]}
+          key={key}
         >
           {element.textContent}
         </Link>
@@ -86,7 +95,7 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
     
     case 'I':
       return (
-        <Text variant="bodyMedium" style={styles.italicText}>
+        <Text variant="bodyMedium" style={styles.italicText} key={key}>
           {element.textContent}
         </Text>
       );
@@ -100,7 +109,10 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         ).join('\n');
 
         return (
-          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.elevation.level2 }]}>
+          <Surface
+            style={[styles.codeBlock, { backgroundColor: theme.colors.elevation.level2 }]}
+            key={key}
+          >
             <Text variant="bodyMedium" style={styles.codeText}>
               {text}
             </Text>
@@ -110,7 +122,7 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
         console.error('Found <pre> element without child <code> element')
 
         return (
-          <Text variant="bodyMedium" style={[styles.paragraph, styles.error]}>
+          <Text variant="bodyMedium" style={[styles.paragraph, styles.error]} key={key}>
             {element.outerHTML}
           </Text>
         );
@@ -118,7 +130,7 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
 
     default:
       return (
-        <Text variant="bodyMedium" style={[styles.paragraph, styles.error]}>
+        <Text variant="bodyMedium" style={[styles.paragraph, styles.error]} key={key}>
           {element.outerHTML}
         </Text>
       );
@@ -129,13 +141,19 @@ function parseElement(element: Element, theme: MD3Theme): JSX.Element {
 
 // Parse <p> element
 // Takes child nodes as argument instead of the <p> element itself
-function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Element {
+function parsePElement(
+  children: ArrayIterator<Node>,
+  theme: MD3Theme,
+  key: string
+): JSX.Element {
   let jsxChildren = [];
+  let key2 = 0;
 
   for (const node of children) {
     switch (node.nodeType) {
       case Node.ELEMENT_NODE:
-        jsxChildren.push(parseElement(node as Element, theme));
+        jsxChildren.push(parseElement(node as Element, theme, `${key}.${key2}`));
+        key2 += 1;
         break;
       case Node.TEXT_NODE:
       default:
@@ -156,7 +174,7 @@ function parsePElement(children: ArrayIterator<Node>, theme: MD3Theme): JSX.Elem
 
 
   return (
-    <Text variant="bodyMedium" style={styles.paragraph}>
+    <Text variant="bodyMedium" style={styles.paragraph} key={key}>
       {jsxChildren}
     </Text>
   );
