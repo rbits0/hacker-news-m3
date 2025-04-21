@@ -41,6 +41,11 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
     : undefined;
   const articleUrl = itemToRender?.url as ExternalPathString | undefined;
 
+  const titleText = itemIsLoading ? 'Loading'
+    : itemIsError ? 'Failed to load'
+    : itemToRender?.deleted ? '[deleted]'
+    : itemToRender?.title || '';
+
   
   return (
     <View style={styles.container}>
@@ -63,13 +68,9 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
             enabled={itemToRender && !disableCommentsLink}
             style={styles.titleLink}
           >
-            <Text variant="bodyLarge" style={styles.titleText} >{
-              itemToRender
-                ? itemToRender.title
-                : itemIsLoading
-                  ? 'Loading'
-                  : 'Failed to load'
-              }</Text>
+            <Text variant="bodyLarge" style={styles.titleText} >
+              {titleText}
+            </Text>
           </OptionalLink>
         </View>
 
