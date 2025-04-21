@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
+import { DOMParser } from "xmldom"; // Required for native version
 
 
 interface Props {
@@ -28,19 +29,24 @@ export default function TextBody({ text }: Props) {
 // Parses HTML into a list of JSX elements
 function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const body = doc.body.childNodes;
+  // Wrap in <p> since xmldom DOMParser can't handle loose text
+  const doc = parser.parseFromString(`<p>${html}</p>`, 'text/html');
+  // Must use .documentElement instead of .body for xmldom
+  const root = doc.documentElement.childNodes;
 
   let looseNodes = [];
   let looseDone = false;
   let jsxElements = []; 
   let key = 0;
 
-  for (const node of body.values()) {
+  // xmldom doesn't have iterator; must use old-fashioned loop
+  for (let i = 0; i < root.length; i++) {
+    const node = root[i];
+
     if (
       node.nodeType === Node.TEXT_NODE
-      || node.nodeName === 'A'
-      || node.nodeName === 'I'
+      || node.nodeName === 'a'
+      || node.nodeName === 'i'
     ) {
       // Handle loose nodes (not wrapped in <p>)
       // Include all text nodes and <a> & <i> elements
@@ -49,7 +55,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
     } else {
       if (!looseDone) {
         // Parse the loose nodes
-        const looseElement = parsePElement(looseNodes.values(), theme, `${key}`);
+        const looseElement = parseLooseNodes(looseNodes, theme, `${key}`);
         jsxElements.push(looseElement);
         key += 1;
 
@@ -63,7 +69,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
   }
 
   if (!looseDone) {
-    const looseElement = parsePElement(looseNodes.values(), theme, `${key}`);
+    const looseElement = parseLooseNodes(looseNodes, theme, `${key}`);
     jsxElements.push(looseElement);
     key += 1;
   }
@@ -77,12 +83,14 @@ function parseElement(
   theme: MD3Theme,
   key: string
 ): JSX.Element {
+  // xmldom uses lowercase tagName instead of uppercase
   switch (element.tagName) {
 
-    case 'P':
-      return parsePElement(element.childNodes.values(), theme, key);
+    case 'p':
+      console.log(element);
+      return parseLooseNodes(element.childNodes, theme, key);
 
-    case 'A':
+    case 'a':
       return (
         <Link
           href={element.getAttribute('href') as ExternalPathString}
@@ -93,15 +101,15 @@ function parseElement(
         </Link>
       );
     
-    case 'I':
+    case 'i':
       return (
         <Text variant="bodyMedium" style={styles.italicText} key={key}>
           {element.textContent}
         </Text>
       );
 
-    case 'PRE':
-      if (element.childElementCount === 1 && element.firstElementChild?.tagName === 'CODE') {
+    case 'pre':
+      if (element.childElementCount === 1 && element.firstElementChild?.tagName === 'code') {
         // Remove extra indentation
         const textContent = element.firstElementChild.textContent || '';
         const text = textContent.split('\n').map(
@@ -139,17 +147,19 @@ function parseElement(
 }
 
 
-// Parse <p> element
-// Takes child nodes as argument instead of the <p> element itself
-function parsePElement(
-  children: ArrayIterator<Node>,
+// Parse list of loose (possibly non-element) nodes (such as children of <p>)
+// Returns a single JSX 
+function parseLooseNodes(
+  nodes: ArrayLike<Node>,
   theme: MD3Theme,
   key: string
 ): JSX.Element {
   let jsxChildren = [];
   let key2 = 0;
 
-  for (const node of children) {
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+
     switch (node.nodeType) {
       case Node.ELEMENT_NODE:
         jsxChildren.push(parseElement(node as Element, theme, `${key}.${key2}`));
