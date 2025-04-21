@@ -10,4 +10,5 @@ export default interface Item {
   score?: number,
   title?: string,
   descendants?: number,
+  deleted?: boolean,
 }

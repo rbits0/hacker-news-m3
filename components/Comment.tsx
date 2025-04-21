@@ -1,7 +1,7 @@
 import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link, Route } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
@@ -42,6 +42,7 @@ export default function Comment({ item, itemId }: Props) {
 
   const text = itemIsLoading ? 'Loading...'
     : itemIsError ? 'Comment failed to load'
+    : itemToRender?.deleted ? '[deleted]'
     : itemToRender!.text || '';
 
   
@@ -61,7 +62,7 @@ export default function Comment({ item, itemId }: Props) {
         <View style={styles.detailsRow}>
           <OptionalLink href={userUrl}>
             <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
-              {itemToRender ? itemToRender.by : ' '}
+              {itemToRender ? itemToRender.by : ''}
             </Text>
           </OptionalLink>
         </View>
