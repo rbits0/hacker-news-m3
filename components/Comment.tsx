@@ -40,6 +40,10 @@ export default function Comment({ item, itemId }: Props) {
     ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
     : undefined;
 
+  const text = itemIsLoading ? 'Loading...'
+    : itemIsError ? 'Comment failed to load'
+    : itemToRender!.text || '';
+
   
   return (
     <View style={styles.container}>
@@ -63,7 +67,7 @@ export default function Comment({ item, itemId }: Props) {
         </View>
 
         <View style={styles.textBodyView}>
-          <TextBody text={itemToRender?.text || ''} />
+          <TextBody text={text} />
         </View>
 
       </Surface>
