@@ -95,6 +95,9 @@ function parseElement(
   // xmldom uses lowercase tagName instead of uppercase
   switch (element.tagName) {
 
+    case 'br':
+      return <></>;
+
     case 'a':
       return (
         <Link
