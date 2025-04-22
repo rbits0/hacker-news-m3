@@ -7,6 +7,9 @@ import { MD3Theme } from "react-native-paper/lib/typescript/types";
 import { DOMParser } from "xmldom"; // Required for native version
 
 
+const INLINE_ELEMENTS = ['a', 'i'];
+
+
 interface Props {
   text: string,
 }
@@ -48,8 +51,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
 
     if (
       node.nodeType === Node.TEXT_NODE
-      || node.nodeName === 'a'
-      || node.nodeName === 'i'
+      || INLINE_ELEMENTS.includes(node.nodeName)
     ) {
       // Handle loose nodes (not wrapped in <p>)
       // Include all text nodes and <a> & <i> elements
