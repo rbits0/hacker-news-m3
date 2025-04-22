@@ -33,7 +33,7 @@ export default function CommentTree({ item, itemId }: Props) {
 
         <View style={styles.childrenContainer}>
           {itemToRender?.kids?.map((childId) => (
-            <CommentTree itemId={childId} />
+            <CommentTree itemId={childId} key={childId} />
           ))}
         </View>
 
