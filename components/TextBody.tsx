@@ -1,5 +1,4 @@
 import { Surface, Text, useTheme } from "react-native-paper"
-import he from "he"
 import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
