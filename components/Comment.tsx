@@ -1,23 +1,21 @@
 import Item from '@/store/Item';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ExternalPathString, Link, Route } from 'expo-router';
-import React, { useEffect } from 'react';
+import { Route } from 'expo-router';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
-import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
-import { MAX_POST_WIDTH } from '@/app/_layout';
 
 
 interface Props {
-  item?: Item,
-  itemId?: number,
+  item: Item | undefined,
+  itemIsLoading?: boolean,
+  itemIsError?: boolean,
 }
 
-export default function Comment({ item, itemId }: Props) {
+export default function Comment({ item, itemIsLoading, itemIsError }: Props) {
   // WIP
 
   const theme = useTheme();
@@ -25,71 +23,54 @@ export default function Comment({ item, itemId }: Props) {
   const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
   const largeVoteButton = useAppSelector(state => state.settings.settings.commentsLargeVoteButton);
 
-  const {
-    data: fetchedItem,
-    isLoading: itemIsLoading,
-    isError: itemIsError,
-  } = useGetItemByIdQuery(itemId!, {
-    skip: itemId === undefined,
-  });
-
-  const itemToRender = fetchedItem ? fetchedItem : item;
-  const itemUrl = itemToRender
-    ? `/comments/${itemToRender.id}` as Route
+  const itemUrl = item
+    ? `/comments/${item.id}` as Route
     : undefined;
-  const userUrl = itemToRender
-    ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
+  const userUrl = item
+    ? `https://news.ycombinator.com/user?id=${item.by}` as Route
     : undefined;
 
   const text = itemIsLoading ? 'Loading...'
     : itemIsError ? 'Comment failed to load'
-    : itemToRender?.deleted ? '[deleted]'
-    : itemToRender!.text || '';
+    : item?.deleted ? '[deleted]'
+    : item!.text || '';
 
   
   return (
-    <View style={styles.outerContainer}>
-      <View style={styles.container}>
+    <View style={styles.container}>
 
-        {displayVotes && largeVoteButton ? (
-          <VoteButtonLarge
-            disabled={itemToRender == undefined}
-            score={itemToRender?.score}
-            onPress={() => { /* TODO: Vote */ }}
-          />
-        ) : null}
-      
-        <Surface style={[styles.surface]}>
+      {displayVotes && largeVoteButton ? (
+        <VoteButtonLarge
+          disabled={item == undefined}
+          score={item?.score}
+          onPress={() => { /* TODO: Vote */ }}
+        />
+      ) : null}
+    
+      <Surface style={[styles.surface]}>
 
-          <View style={styles.detailsRow}>
-            <OptionalLink href={userUrl}>
-              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
-                {itemToRender ? itemToRender.by : ''}
-              </Text>
-            </OptionalLink>
-          </View>
+        <View style={styles.detailsRow}>
+          <OptionalLink href={userUrl}>
+            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
+              {item ? item.by : ''}
+            </Text>
+          </OptionalLink>
+        </View>
 
-          <View style={styles.textBodyView}>
-            <TextBody text={text} />
-          </View>
+        <View style={styles.textBodyView}>
+          <TextBody text={text} />
+        </View>
 
-        </Surface>
-      </View>
+      </Surface>
     </View>
   )
 }
 
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
   container: {
     flexDirection: 'row',
     gap: 6,
-    width: '100%',
-    maxWidth: MAX_POST_WIDTH,
   },
   surface: {
     padding: 4,

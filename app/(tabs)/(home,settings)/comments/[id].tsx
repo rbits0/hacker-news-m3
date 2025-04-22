@@ -3,9 +3,9 @@ import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import { useLocalSearchParams } from "expo-router"
 import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
-import Comment from "@/components/Comment";
 import DynamicScrollList from "@/components/DynamicScrollList";
 import { LARGE_WIDTH } from "@/app/_layout";
+import CommentTree from "@/components/CommentTree";
 
 
 const NUM_COMMENTS_PER_PAGE = 20;
@@ -28,7 +28,7 @@ export default function CommentsScreen() {
 
       <DynamicScrollList
         data={fetchedItem?.kids}
-        renderItem={({ item }) => <Comment itemId={item} />}
+        renderItem={({ item }) => <CommentTree itemId={item} />}
         itemsPerPage={NUM_COMMENTS_PER_PAGE}
         contentContainerStyle={styles.innerList}
         style={[styles.list, { padding: width < LARGE_WIDTH ? 6 : 12 }]}
