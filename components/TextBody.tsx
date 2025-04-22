@@ -4,6 +4,7 @@ import { ExternalPathString, Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
 import { DOMParser } from "xmldom"; // Required for native version
+import CodeBlock from "./CodeBlock";
 
 
 const INLINE_ELEMENTS = ['a', 'i'];
@@ -117,14 +118,9 @@ function parseElement(
         ).join('\n');
 
         return (
-          <Surface
-            style={[styles.codeBlock, { backgroundColor: theme.colors.elevation.level2 }]}
-            key={key}
-          >
-            <Text variant="bodyMedium" style={styles.codeText}>
-              {text}
-            </Text>
-          </Surface>
+          <CodeBlock key={key}>
+            {text}
+          </CodeBlock>
         );
       } else {
         console.error('Found <pre> element without child <code> element')
@@ -201,16 +197,6 @@ const styles = StyleSheet.create({
   },
   italicText: {
     fontStyle: 'italic',
-  },
-  codeBlock: {
-    borderRadius: 8,
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  codeText: {
-    fontFamily: 'monospace'
   },
   error: {
     color: 'red'
