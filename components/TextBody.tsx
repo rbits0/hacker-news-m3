@@ -33,7 +33,7 @@ export default function TextBody({ text, style }: Props) {
 
 
 // Parses HTML into a list of JSX elements
-function parseHTML(html: string): JSX.Element[] {
+function parseHTML(html: string): (JSX.Element | null)[] {
   // xmldom treats the <p> tags as opening a new nested element instead of a line break
   const htmlToParse = html.replaceAll('<p>', '<br>');
 
@@ -89,12 +89,12 @@ function parseHTML(html: string): JSX.Element[] {
 function parseElement(
   element: Element,
   key: string
-): JSX.Element {
+): JSX.Element | null {
   // xmldom uses lowercase tagName instead of uppercase
   switch (element.tagName) {
 
     case 'br':
-      return <></>;
+      return null;
 
     case 'a':
       return (
