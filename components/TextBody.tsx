@@ -3,12 +3,16 @@ import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
-import { DOMParser } from "xmldom"; // Required for native version
+import { DOMParser, DOMImplementationStatic } from "xmldom"; // Required for native version
 import CodeBlock from "./CodeBlock";
 
 
 const INLINE_ELEMENTS = ['a', 'i'];
 
+enum NodeType {
+  ELEMENT = 1,
+  TEXT = 3,
+}
 
 interface Props {
   text: string,
@@ -50,7 +54,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
     const node = root[i];
 
     if (
-      node.nodeType === Node.TEXT_NODE
+      node.nodeType === NodeType.TEXT
       || INLINE_ELEMENTS.includes(node.nodeName)
     ) {
       // Handle loose nodes (not wrapped in <p>)
@@ -157,11 +161,11 @@ function parseLooseNodes(
     const node = nodes[i];
 
     switch (node.nodeType) {
-      case Node.ELEMENT_NODE:
+      case NodeType.ELEMENT:
         jsxChildren.push(parseElement(node as Element, theme, `${key}.${key2}`));
         key2 += 1;
         break;
-      case Node.TEXT_NODE:
+      case NodeType.TEXT:
       default:
         // Remove \n, since it should be ignored in HTML
         // Replace it with a space instead
