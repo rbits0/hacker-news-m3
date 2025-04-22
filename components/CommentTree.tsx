@@ -31,11 +31,13 @@ export default function CommentTree({ item, itemId }: Props) {
           itemIsError={itemIsError}
         />
 
-        <View style={styles.childrenContainer}>
-          {itemToRender?.kids?.map((childId) => (
-            <CommentTree itemId={childId} key={childId} />
-          ))}
-        </View>
+        {itemToRender?.kids && itemToRender.kids.length > 0 ? (
+          <View style={styles.childrenContainer}>
+            {itemToRender?.kids?.map((childId) => (
+              <CommentTree itemId={childId} key={childId} />
+            ))}
+          </View>
+        ) : null}
 
       </View>
     </View>
