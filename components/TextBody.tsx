@@ -168,9 +168,9 @@ function parseLooseNodes(
 
         let textContent = (node.textContent || '')
         // If there's a \n at the start, remove it instead of replacing with space
-        // if (jsxChildren.length === 0 && textContent[0] === '\n') {
-        //   textContent = textContent.slice(1);
-        // }
+        if (jsxChildren.length === 0 && textContent[0] === '\n') {
+          textContent = textContent.slice(1);
+        }
         textContent = textContent.replaceAll('\n', ' ');
 
         jsxChildren.push(textContent);
