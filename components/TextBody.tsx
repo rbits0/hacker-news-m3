@@ -110,9 +110,9 @@ function parseElement(
       );
 
     case 'pre':
-      if (element.childElementCount === 1 && element.firstElementChild?.tagName === 'code') {
+      if (element.firstChild?.nodeName === 'code') {
         // Remove extra indentation
-        const textContent = element.firstElementChild.textContent || '';
+        const textContent = element.firstChild.textContent || '';
         const text = textContent.split('\n').map(
           line => line.slice(2, line.length)
         ).join('\n');
