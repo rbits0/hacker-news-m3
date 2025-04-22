@@ -54,7 +54,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
       || INLINE_ELEMENTS.includes(node.nodeName)
     ) {
       // Handle loose nodes (not wrapped in <p>)
-      // Include all text nodes and <a> & <i> elements
+      // Include all text nodes and inline elements
       looseNodes.push(node);
       looseDone = false;
     } else {
