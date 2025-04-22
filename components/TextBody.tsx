@@ -2,7 +2,6 @@ import {  Text, useTheme } from "react-native-paper"
 import { useMemo } from "react";
 import { ExternalPathString } from "expo-router";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { MD3Theme } from "react-native-paper/lib/typescript/types";
 import { DOMParser } from "xmldom"; // Required for native version
 import CodeBlock from "./CodeBlock";
 import TextLink from "./TextLink";
@@ -21,11 +20,9 @@ interface Props {
 }
 
 export default function TextBody({ text, style }: Props) {
-  const theme = useTheme();
-
   const bodyList = useMemo(() => (
-    parseHTML(text, theme)
-  ), [text, theme]);
+    parseHTML(text)
+  ), [text]);
 
   return (
     <View style={[styles.container, style]}>
@@ -36,7 +33,7 @@ export default function TextBody({ text, style }: Props) {
 
 
 // Parses HTML into a list of JSX elements
-function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
+function parseHTML(html: string): JSX.Element[] {
   // xmldom treats the <p> tags as opening a new nested element instead of a line break
   const htmlToParse = html.replaceAll('<p>', '<br>');
 
@@ -66,7 +63,7 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
     } else {
       if (!looseDone) {
         // Parse the loose nodes
-        const looseElement = parseLooseNodes(looseNodes, theme, `${key}`);
+        const looseElement = parseLooseNodes(looseNodes, `${key}`);
         jsxElements.push(looseElement);
         key += 1;
 
@@ -74,13 +71,13 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
         looseDone = true;
       }
 
-      jsxElements.push(parseElement(node as Element, theme, `${key}`));
+      jsxElements.push(parseElement(node as Element, `${key}`));
       key += 1;
     }
   }
 
   if (!looseDone) {
-    const looseElement = parseLooseNodes(looseNodes, theme, `${key}`);
+    const looseElement = parseLooseNodes(looseNodes, `${key}`);
     jsxElements.push(looseElement);
     key += 1;
   }
@@ -91,7 +88,6 @@ function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
 
 function parseElement(
   element: Element,
-  theme: MD3Theme,
   key: string
 ): JSX.Element {
   // xmldom uses lowercase tagName instead of uppercase
@@ -155,7 +151,6 @@ function parseElement(
 // Returns a single JSX component
 function parseLooseNodes(
   nodes: ArrayLike<Node>,
-  theme: MD3Theme,
   key: string
 ): JSX.Element {
   let jsxChildren = [];
@@ -166,7 +161,7 @@ function parseLooseNodes(
 
     switch (node.nodeType) {
       case NodeType.ELEMENT:
-        jsxChildren.push(parseElement(node as Element, theme, `${key}.${key2}`));
+        jsxChildren.push(parseElement(node as Element, `${key}.${key2}`));
         key2 += 1;
         break;
       case NodeType.TEXT:
