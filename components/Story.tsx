@@ -10,6 +10,7 @@ import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
 import LinkImage from './LinkImage';
+import { MAX_POST_WIDTH } from '@/app/_layout';
 
 
 interface Props {
@@ -48,64 +49,70 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
 
   
   return (
-    <View style={styles.container}>
+    <View style={styles.outerContainer}>
+      <View style={styles.container}>
 
-      {displayVotes ? (
-        <VoteButtonLarge
-          disabled={itemToRender == undefined}
-          score={itemToRender?.score}
-          onPress={() => { /* TODO: Vote */ }}
-        />
-      ) : null}
-    
-      <Surface style={[styles.surface]}>
-        <View style={[styles.surfaceRow]}>
-          <LinkImage href={articleUrl}/>
-
-          {/* Title */}
-          <OptionalLink
-            href={itemUrl!}
-            enabled={itemToRender && !disableCommentsLink}
-            style={styles.titleLink}
-          >
-            <Text variant="bodyLarge" style={styles.titleText} >
-              {titleText}
-            </Text>
-          </OptionalLink>
-        </View>
-
-        {showBody && itemToRender?.text ? (
-          <View style={styles.textBodyView}>
-            <TextBody text={itemToRender.text} />
-          </View>
+        {displayVotes ? (
+          <VoteButtonLarge
+            disabled={itemToRender == undefined}
+            score={itemToRender?.score}
+            onPress={() => { /* TODO: Vote */ }}
+          />
         ) : null}
       
-        <View style={styles.detailsRow}>
-          <OptionalLink href={itemUrl} enabled={!disableCommentsLink}>
-            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
-              {itemToRender ? `${itemToRender.descendants} comments` : ' '}
-            </Text>
-          </OptionalLink>
+        <Surface style={[styles.surface]}>
+          <View style={[styles.surfaceRow]}>
+            <LinkImage href={articleUrl}/>
 
-          <OptionalLink href={userUrl}>
-            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
-              {itemToRender ? itemToRender.by : ' '}
-            </Text>
-          </OptionalLink>
-        </View>
+            {/* Title */}
+            <OptionalLink
+              href={itemUrl!}
+              enabled={itemToRender && !disableCommentsLink}
+              style={styles.titleLink}
+            >
+              <Text variant="bodyLarge" style={styles.titleText} >
+                {titleText}
+              </Text>
+            </OptionalLink>
+          </View>
 
-      </Surface>
+          {showBody && itemToRender?.text ? (
+            <View style={styles.textBodyView}>
+              <TextBody text={itemToRender.text} />
+            </View>
+          ) : null}
+        
+          <View style={styles.detailsRow}>
+            <OptionalLink href={itemUrl} enabled={!disableCommentsLink}>
+              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+                {itemToRender ? `${itemToRender.descendants} comments` : ' '}
+              </Text>
+            </OptionalLink>
+
+            <OptionalLink href={userUrl}>
+              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+                {itemToRender ? itemToRender.by : ' '}
+              </Text>
+            </OptionalLink>
+          </View>
+
+        </Surface>
+      </View>
     </View>
   )
 }
 
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
   container: {
     flexDirection: 'row',
-    display: 'flex',
-    width: '100%',
     gap: 6,
+    width: '100%',
+    maxWidth: MAX_POST_WIDTH,
   },
   surface: {
     padding: 4,

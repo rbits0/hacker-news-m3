@@ -9,6 +9,7 @@ import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
+import { MAX_POST_WIDTH } from '@/app/_layout';
 
 
 interface Props {
@@ -47,42 +48,48 @@ export default function Comment({ item, itemId }: Props) {
 
   
   return (
-    <View style={styles.container}>
+    <View style={styles.outerContainer}>
+      <View style={styles.container}>
 
-      {displayVotes && largeVoteButton ? (
-        <VoteButtonLarge
-          disabled={itemToRender == undefined}
-          score={itemToRender?.score}
-          onPress={() => { /* TODO: Vote */ }}
-        />
-      ) : null}
-    
-      <Surface style={[styles.surface]}>
+        {displayVotes && largeVoteButton ? (
+          <VoteButtonLarge
+            disabled={itemToRender == undefined}
+            score={itemToRender?.score}
+            onPress={() => { /* TODO: Vote */ }}
+          />
+        ) : null}
+      
+        <Surface style={[styles.surface]}>
 
-        <View style={styles.detailsRow}>
-          <OptionalLink href={userUrl}>
-            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
-              {itemToRender ? itemToRender.by : ''}
-            </Text>
-          </OptionalLink>
-        </View>
+          <View style={styles.detailsRow}>
+            <OptionalLink href={userUrl}>
+              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
+                {itemToRender ? itemToRender.by : ''}
+              </Text>
+            </OptionalLink>
+          </View>
 
-        <View style={styles.textBodyView}>
-          <TextBody text={text} />
-        </View>
+          <View style={styles.textBodyView}>
+            <TextBody text={text} />
+          </View>
 
-      </Surface>
+        </Surface>
+      </View>
     </View>
   )
 }
 
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
   container: {
     flexDirection: 'row',
-    display: 'flex',
-    width: '100%',
     gap: 6,
+    width: '100%',
+    maxWidth: MAX_POST_WIDTH,
   },
   surface: {
     padding: 4,

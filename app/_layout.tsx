@@ -7,6 +7,7 @@ import { loadSettings } from '@/store/slices/settings';
 
 
 export const LARGE_WIDTH = 700;
+export const MAX_POST_WIDTH = 1000;
 
 
 export default function RootLayout() {
