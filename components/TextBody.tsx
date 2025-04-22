@@ -1,7 +1,7 @@
 import { Surface, Text, useTheme } from "react-native-paper"
 import { useMemo } from "react";
 import { ExternalPathString, Link } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
 import { DOMParser, DOMImplementationStatic } from "xmldom"; // Required for native version
 import CodeBlock from "./CodeBlock";
@@ -16,9 +16,10 @@ enum NodeType {
 
 interface Props {
   text: string,
+  style: StyleProp<ViewStyle>,
 }
 
-export default function TextBody({ text }: Props) {
+export default function TextBody({ text, style }: Props) {
   const theme = useTheme();
 
   const bodyList = useMemo(() => (
@@ -26,7 +27,7 @@ export default function TextBody({ text }: Props) {
   ), [text, theme]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {bodyList}
     </View>
   );
