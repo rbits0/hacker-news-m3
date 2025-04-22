@@ -16,7 +16,7 @@ enum NodeType {
 
 interface Props {
   text: string,
-  style: StyleProp<ViewStyle>,
+  style?: StyleProp<ViewStyle>,
 }
 
 export default function TextBody({ text, style }: Props) {
