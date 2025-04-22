@@ -26,7 +26,7 @@ export default function TextBody({ text }: Props) {
   ), [text, theme]);
 
   return (
-    <View>
+    <View style={styles.container}>
       {bodyList}
     </View>
   );
@@ -133,7 +133,7 @@ function parseElement(
         console.error('Found <pre> element without child <code> element')
 
         return (
-          <Text variant="bodyMedium" style={[styles.paragraph, styles.error]} key={key}>
+          <Text variant="bodyMedium" style={styles.error} key={key}>
             {element.outerHTML}
           </Text>
         );
@@ -141,7 +141,7 @@ function parseElement(
 
     default:
       return (
-        <Text variant="bodyMedium" style={[styles.paragraph, styles.error]} key={key}>
+        <Text variant="bodyMedium" style={styles.error} key={key}>
           {element.outerHTML}
         </Text>
       );
@@ -187,7 +187,7 @@ function parseLooseNodes(
 
 
   return (
-    <Text variant="bodyMedium" style={styles.paragraph} key={key}>
+    <Text variant="bodyMedium" key={key}>
       {jsxChildren}
     </Text>
   );
@@ -195,9 +195,8 @@ function parseLooseNodes(
 
 
 const styles = StyleSheet.create({
-  paragraph: {
-    marginTop: 4,
-    marginBottom: 4,
+  container: {
+    gap: 8,
   },
   link: {
     textDecorationLine: 'underline',
