@@ -28,9 +28,12 @@ export default function TextBody({ text }: Props) {
 
 // Parses HTML into a list of JSX elements
 function parseHTML(html: string, theme: MD3Theme): JSX.Element[] {
+  // xmldom treats the <p> tags as opening a new nested element instead of a line break
+  const htmlToParse = html.replaceAll('<p>', '<br>');
+
   const parser = new DOMParser();
   // Wrap in <p> since xmldom DOMParser can't handle loose text
-  const doc = parser.parseFromString(`<p>${html}</p>`, 'text/html');
+  const doc = parser.parseFromString(`<p>${htmlToParse}</p>`, 'text/html');
   // Must use .documentElement instead of .body for xmldom
   const root = doc.documentElement.childNodes;
 
@@ -85,10 +88,6 @@ function parseElement(
 ): JSX.Element {
   // xmldom uses lowercase tagName instead of uppercase
   switch (element.tagName) {
-
-    case 'p':
-      console.log(element);
-      return parseLooseNodes(element.childNodes, theme, key);
 
     case 'a':
       return (
@@ -147,8 +146,8 @@ function parseElement(
 }
 
 
-// Parse list of loose (possibly non-element) nodes (such as children of <p>)
-// Returns a single JSX 
+// Parse list of loose (possibly non-element) nodes
+// Returns a single JSX component
 function parseLooseNodes(
   nodes: ArrayLike<Node>,
   theme: MD3Theme,
