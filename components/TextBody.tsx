@@ -1,10 +1,11 @@
-import { Surface, Text, useTheme } from "react-native-paper"
+import {  Text, useTheme } from "react-native-paper"
 import { useMemo } from "react";
-import { ExternalPathString, Link } from "expo-router";
+import { ExternalPathString } from "expo-router";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { MD3Theme } from "react-native-paper/lib/typescript/types";
-import { DOMParser, DOMImplementationStatic } from "xmldom"; // Required for native version
+import { DOMParser } from "xmldom"; // Required for native version
 import CodeBlock from "./CodeBlock";
+import TextLink from "./TextLink";
 
 
 const INLINE_ELEMENTS = ['a', 'i'];
@@ -101,13 +102,12 @@ function parseElement(
 
     case 'a':
       return (
-        <Link
+        <TextLink
           href={element.getAttribute('href') as ExternalPathString}
-          style={[styles.link, { color: theme.colors.primary }]}
           key={key}
         >
           {element.textContent}
-        </Link>
+        </TextLink>
       );
     
     case 'i':
@@ -198,9 +198,6 @@ function parseLooseNodes(
 const styles = StyleSheet.create({
   container: {
     gap: 8,
-  },
-  link: {
-    textDecorationLine: 'underline',
   },
   italicText: {
     fontStyle: 'italic',
