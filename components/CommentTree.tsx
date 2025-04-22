@@ -58,5 +58,6 @@ const styles = StyleSheet.create({
   childrenContainer: {
     width: '100%',
     paddingLeft: 25,
+    gap: 10,
   }
 })
