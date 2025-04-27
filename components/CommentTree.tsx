@@ -3,6 +3,7 @@ import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import Comment from "./Comment";
 import { StyleSheet, View } from "react-native";
 import { MAX_POST_WIDTH } from "@/app/_layout";
+import TreeLine from "./TreeLine";
 
 
 interface Props {
@@ -32,10 +33,13 @@ export default function CommentTree({ item, itemId }: Props) {
         />
 
         {itemToRender?.kids && itemToRender.kids.length > 0 ? (
-          <View style={styles.childrenContainer}>
-            {itemToRender?.kids?.map((childId) => (
-              <CommentTree itemId={childId} key={childId} />
-            ))}
+          <View style={styles.indentContainer}>
+            <TreeLine />
+            <View style={styles.childrenContainer}>
+              {itemToRender?.kids?.map((childId) => (
+                <CommentTree itemId={childId} key={childId} />
+              ))}
+            </View>
           </View>
         ) : null}
 
@@ -55,9 +59,11 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: MAX_POST_WIDTH,
   },
+  indentContainer: {
+    flexDirection: 'row',
+  },
   childrenContainer: {
     width: '100%',
-    paddingLeft: 25,
     gap: 10,
   }
 })
