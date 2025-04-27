@@ -51,19 +51,17 @@ export default function CommentTree({ item, itemId }: Props) {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    width: '100%',
     alignItems: 'center',
   },
   container: {
     gap: 10,
-    width: '100%',
     maxWidth: MAX_POST_WIDTH,
   },
   indentContainer: {
     flexDirection: 'row',
   },
   childrenContainer: {
-    width: '100%',
     gap: 10,
+    flex: 1,
   }
 })
