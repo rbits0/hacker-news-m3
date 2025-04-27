@@ -15,7 +15,7 @@ export default function TreeLine() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 25,
+    width: 13,
     // alignItems: 'center',
     paddingLeft: 3,
   },
