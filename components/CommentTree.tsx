@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   },
   container: {
     gap: 10,
+    width: '100%',
     maxWidth: MAX_POST_WIDTH,
   },
   indentContainer: {
