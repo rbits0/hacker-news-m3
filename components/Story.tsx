@@ -1,7 +1,7 @@
 import Item from '@/store/Item';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExternalPathString, Link, Route } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Text as TextRN } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
@@ -11,6 +11,8 @@ import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
 import LinkImage from './LinkImage';
 import { MAX_POST_WIDTH } from '@/app/_layout';
+import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import SwipeVote from './SwipeVote';
 
 
 interface Props {
@@ -50,8 +52,13 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
   
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.container}>
-
+      <Swipeable
+        containerStyle={styles.swipeableContainerStyle}
+        childrenContainerStyle={styles.container}
+        renderRightActions={(progress, translation) => (
+          SwipeVote(progress, translation, false)
+        )}
+      >
         {displayVotes ? (
           <VoteButtonLarge
             disabled={itemToRender == undefined}
@@ -97,7 +104,7 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
           </View>
 
         </Surface>
-      </View>
+      </Swipeable>
     </View>
   )
 }
@@ -108,11 +115,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  swipeableContainerStyle: {
+    width: '100%',
+    maxWidth: MAX_POST_WIDTH,
+  },
   container: {
     flexDirection: 'row',
     gap: 6,
     width: '100%',
-    maxWidth: MAX_POST_WIDTH,
   },
   surface: {
     padding: 4,

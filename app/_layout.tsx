@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from '@/store';
 import { Platform, useWindowDimensions } from 'react-native';
 import { loadSettings } from '@/store/slices/settings';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 export const LARGE_WIDTH = 700;
@@ -54,10 +55,12 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)"/>
-          <Stack.Screen name="+not-found"/>
-        </Stack>
+        <GestureHandlerRootView>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)"/>
+            <Stack.Screen name="+not-found"/>
+          </Stack>
+        </GestureHandlerRootView>
       </PaperProvider>
     </Provider>
   );
