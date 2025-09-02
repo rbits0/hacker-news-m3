@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   swipeableContainerStyle: {
     width: '100%',
     maxWidth: MAX_POST_WIDTH,
+    overflow: 'visible',
   },
   container: {
     flexDirection: 'row',
