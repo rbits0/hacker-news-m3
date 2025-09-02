@@ -33,11 +33,11 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "sdkVersion": "52.0.0"
+    }
   }
 }
