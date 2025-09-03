@@ -1,8 +1,7 @@
 import Item from '@/store/Item';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ExternalPathString, Link, Route } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text as TextRN } from 'react-native';
+import { ExternalPathString, Route } from 'expo-router';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
@@ -11,8 +10,11 @@ import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
 import LinkImage from './LinkImage';
 import { MAX_POST_WIDTH } from '@/app/_layout';
-import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import SwipeVote from './SwipeVote';
+
+
+const SWIPE_THRESHOLD = 40;
 
 
 interface Props {
@@ -58,6 +60,7 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
         renderRightActions={(progress, translation) => (
           SwipeVote(progress, translation, false)
         )}
+        rightThreshold={SWIPE_THRESHOLD}
       >
         {displayVotes ? (
           <VoteButtonLarge
