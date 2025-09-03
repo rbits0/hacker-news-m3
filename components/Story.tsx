@@ -1,6 +1,6 @@
 import Item from '@/store/Item';
 import { ExternalPathString, Route } from 'expo-router';
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
@@ -10,7 +10,7 @@ import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
 import LinkImage from './LinkImage';
 import { MAX_POST_WIDTH } from '@/app/_layout';
-import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import SwipeVote from './SwipeVote';
 
 
@@ -26,6 +26,7 @@ interface Props {
 
 export default function Story({ item, itemId, showBody, disableCommentsLink }: Props) {
   const theme = useTheme();
+  const swipeableRef = useRef<SwipeableMethods | null>(null);
   
   const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
 
@@ -52,6 +53,14 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
     : itemToRender?.title || '';
 
   
+  const onVote = () => {
+    // Stop swipeable from opening
+    swipeableRef.current?.close();
+
+    // TODO: Vote
+  };
+
+  
   return (
     <View style={styles.outerContainer}>
       <Swipeable
@@ -61,6 +70,8 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
           SwipeVote(progress, translation, false)
         )}
         rightThreshold={SWIPE_THRESHOLD}
+        onSwipeableWillOpen={onVote}
+        ref={swipeableRef}
       >
         {displayVotes ? (
           <VoteButtonLarge
