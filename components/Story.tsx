@@ -18,39 +18,31 @@ const SWIPE_THRESHOLD = 40;
 
 
 interface Props {
-  item?: Item,
-  itemId?: number,
+  item: Item | undefined,
+  isLoading?: boolean,
+  isError?: boolean,
   showBody?: boolean,
   disableCommentsLink?: boolean,
 }
 
-export default function Story({ item, itemId, showBody, disableCommentsLink }: Props) {
+export default function Story({ item, isLoading, isError, showBody, disableCommentsLink }: Props) {
   const theme = useTheme();
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   
   const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
 
-  const {
-    data: fetchedItem,
-    isLoading: itemIsLoading,
-    isError: itemIsError,
-  } = useGetItemByIdQuery(itemId!, {
-    skip: itemId === undefined,
-  });
-
-  const itemToRender = fetchedItem ? fetchedItem : item;
-  const itemUrl = itemToRender
-    ? `/comments/${itemToRender.id}` as Route
+  const itemUrl = item
+    ? `/comments/${item.id}` as Route
     : undefined;
-  const userUrl = itemToRender
-    ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
+  const userUrl = item
+    ? `https://news.ycombinator.com/user?id=${item.by}` as Route
     : undefined;
-  const articleUrl = itemToRender?.url as ExternalPathString | undefined;
+  const articleUrl = item?.url as ExternalPathString | undefined;
 
-  const titleText = itemIsLoading ? 'Loading'
-    : itemIsError ? 'Failed to load'
-    : itemToRender?.deleted ? '[deleted]'
-    : itemToRender?.title || '';
+  const titleText = isLoading ? 'Loading'
+    : isError ? 'Failed to load'
+    : item?.deleted ? '[deleted]'
+    : item?.title || '';
 
   
   const onVote = () => {
@@ -75,8 +67,8 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
       >
         {displayVotes ? (
           <VoteButtonLarge
-            disabled={itemToRender == undefined}
-            score={itemToRender?.score}
+            disabled={item == undefined}
+            score={item?.score}
             onPress={() => { /* TODO: Vote */ }}
           />
         ) : null}
@@ -88,7 +80,7 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
             {/* Title */}
             <OptionalLink
               href={itemUrl!}
-              enabled={itemToRender && !disableCommentsLink}
+              enabled={item && !disableCommentsLink}
               style={styles.titleLink}
             >
               <Text variant="bodyLarge" style={styles.titleText} >
@@ -97,22 +89,22 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
             </OptionalLink>
           </View>
 
-          {showBody && itemToRender?.text ? (
+          {showBody && item?.text ? (
             <View style={styles.textBodyView}>
-              <TextBody text={itemToRender.text} />
+              <TextBody text={item.text} />
             </View>
           ) : null}
         
           <View style={styles.detailsRow}>
             <OptionalLink href={itemUrl} enabled={!disableCommentsLink}>
               <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
-                {itemToRender ? `${itemToRender.descendants} comments` : ' '}
+                {item ? `${item.descendants} comments` : ' '}
               </Text>
             </OptionalLink>
 
             <OptionalLink href={userUrl}>
               <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
-                {itemToRender ? itemToRender.by : ' '}
+                {item ? item.by : ' '}
               </Text>
             </OptionalLink>
           </View>

@@ -4,40 +4,27 @@ import Comment from "./Comment";
 import { StyleSheet, View } from "react-native";
 import { MAX_POST_WIDTH } from "@/app/_layout";
 import TreeLine from "./TreeLine";
+import AlgoliaItem, { algoliaItemToItem } from "@/store/AlgoliaItem";
 
 
 interface Props {
-  item?: Item,
+  item: AlgoliaItem,
   itemId?: number,
 }
 
 export default function CommentTree({ item, itemId }: Props) {
-  const {
-    data: fetchedItem,
-    isLoading: itemIsLoading,
-    isError: itemIsError,
-  } = useGetItemByIdQuery(itemId!, {
-    skip: itemId === undefined,
-  });
-
-  const itemToRender = fetchedItem ? fetchedItem : item;
-
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
 
-        <Comment
-          item={itemToRender}
-          itemIsLoading={itemIsLoading}
-          itemIsError={itemIsError}
-        />
+        <Comment item={algoliaItemToItem(item)}/>
 
-        {itemToRender?.kids && itemToRender.kids.length > 0 ? (
+        {item.children.length > 0 ? (
           <View style={styles.indentContainer}>
             <TreeLine />
             <View style={styles.childrenContainer}>
-              {itemToRender?.kids?.map((childId) => (
-                <CommentTree itemId={childId} key={childId} />
+              {item.children.map((child) => (
+                <CommentTree item={child} key={child.id} />
               ))}
             </View>
           </View>
