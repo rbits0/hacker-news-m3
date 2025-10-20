@@ -1,5 +1,3 @@
-import Item from "@/store/Item";
-import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import Comment from "./Comment";
 import { StyleSheet, View } from "react-native";
 import { MAX_POST_WIDTH } from "@/app/_layout";

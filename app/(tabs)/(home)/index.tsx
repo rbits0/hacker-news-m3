@@ -1,7 +1,6 @@
 import Story from '@/components/Story';
 import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery } from '@/store/services/hackerNews';
-import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, useWindowDimensions, View, ViewToken } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { LARGE_WIDTH } from '@/app/_layout';
 import DynamicScrollList from '@/components/DynamicScrollList';

@@ -1,9 +1,7 @@
 import Story from "@/components/Story";
-import { useGetItemByIdQuery } from "@/store/services/hackerNews";
 import { useLocalSearchParams } from "expo-router"
 import { View, StyleSheet, useWindowDimensions, FlatList } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
-import DynamicScrollList from "@/components/DynamicScrollList";
 import { LARGE_WIDTH } from "@/app/_layout";
 import CommentTree from "@/components/CommentTree";
 import { useGetAlgoliaItemByIdQuery } from "@/store/services/algolia";
