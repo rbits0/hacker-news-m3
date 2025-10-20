@@ -5,7 +5,7 @@ export default interface AlgoliaItem {
     created_at: string,
     author: string,
     text: string | null,
-    points: 57,
+    points: number,
     parent_id: number | null,
     children: [AlgoliaItem],
     title?: string,
