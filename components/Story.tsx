@@ -19,12 +19,22 @@ const SWIPE_THRESHOLD = 40;
 
 interface Props {
   item?: Item,
+  itemIsLoading?: boolean,
+  itemIsError?: boolean,
   itemId?: number,
   showBody?: boolean,
   disableCommentsLink?: boolean,
 }
 
-export default function Story({ item, itemId, showBody, disableCommentsLink }: Props) {
+export default function Story({
+    item,
+    itemIsLoading,
+    itemIsError,
+    itemId,
+    showBody,
+    disableCommentsLink
+  }: Props
+) {
   const theme = useTheme();
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   
@@ -32,11 +42,14 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
 
   const {
     data: fetchedItem,
-    isLoading: itemIsLoading,
-    isError: itemIsError,
+    isLoading: fetchedItemIsLoading,
+    isError: fetchedItemIsError,
   } = useGetItemByIdQuery(itemId!, {
     skip: itemId === undefined,
   });
+
+  const isLoading = itemIsLoading || fetchedItemIsLoading;
+  const isError = itemIsError || fetchedItemIsError;
 
   const itemToRender = fetchedItem ? fetchedItem : item;
   const itemUrl = itemToRender
@@ -47,8 +60,8 @@ export default function Story({ item, itemId, showBody, disableCommentsLink }: P
     : undefined;
   const articleUrl = itemToRender?.url as ExternalPathString | undefined;
 
-  const titleText = itemIsLoading ? 'Loading'
-    : itemIsError ? 'Failed to load'
+  const titleText = isLoading ? 'Loading'
+    : isError ? 'Failed to load'
     : itemToRender?.deleted ? '[deleted]'
     : itemToRender?.title || '';
 

@@ -1,8 +1,10 @@
+// Item format from https://hacker-news.firebaseio.com/v0/item/
+
 export default interface Item {
   id: number,
-  type: 'story' | 'comment',
   by: string,
   time: number,
+  type?: 'story' | 'comment',
   text?: string,
   parent?: number,
   kids?: number[],
