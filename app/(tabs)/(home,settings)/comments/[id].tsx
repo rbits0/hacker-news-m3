@@ -37,8 +37,8 @@ export default function CommentsScreen() {
           <View>
             <Story
               item={item ? algoliaItemToItem(item) : undefined}
-              isLoading={isLoading}
-              isError={isError}
+              itemIsLoading={isLoading}
+              itemIsError={isError}
               showBody={true}
               disableCommentsLink={true}
             />
