@@ -38,7 +38,7 @@ export default function Story({
   const theme = useTheme();
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   
-  const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
+  const displayVotes = useAppSelector(state => state.settings.displayVotes);
 
   const {
     data: fetchedItem,
