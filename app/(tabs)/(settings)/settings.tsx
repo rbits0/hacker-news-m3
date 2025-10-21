@@ -1,16 +1,20 @@
 import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
+import SignInDialog from '@/components/SignInDialog';
 import { useAppSelector } from '@/store/hooks';
 import { modifySetting } from '@/store/slices/settings';
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { List, useTheme } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, List, useTheme } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
 
 export default function SettingsPage() {
   const theme = useTheme();
   const settings = useAppSelector(state => state.settings);
   const dispatch = useDispatch();
+
+  const [signInVisible, setSignInVisible] = useState(false);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -34,8 +38,21 @@ export default function SettingsPage() {
           ))}
         />
 
+        <List.Subheader>Account</List.Subheader>
+        <Button
+          mode="contained"
+          onPress={() => setSignInVisible(true)}
+          style={styles.signInButton}
+        >
+          Sign in
+        </Button>
 
       </List.Section>
+
+      <SignInDialog
+        visible={signInVisible}
+        onDismiss={() => setSignInVisible(false)}
+      />
     </View>
   );
 }
@@ -44,5 +61,10 @@ export default function SettingsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }
+  },
+  signInButton: {
+    width: 'auto',
+    marginLeft: 16,
+    marginRight: 'auto',
+  },
 });
