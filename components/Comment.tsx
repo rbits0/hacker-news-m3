@@ -20,8 +20,8 @@ export default function Comment({ item, itemIsLoading, itemIsError }: Props) {
 
   const theme = useTheme();
   
-  const displayVotes = useAppSelector(state => state.settings.settings.displayVotes);
-  const largeVoteButton = useAppSelector(state => state.settings.settings.commentsLargeVoteButton);
+  const displayVotes = useAppSelector(state => state.settings.displayVotes);
+  const largeVoteButton = useAppSelector(state => state.settings.commentsLargeVoteButton);
 
   const itemUrl = item
     ? `/comments/${item.id}` as Route
