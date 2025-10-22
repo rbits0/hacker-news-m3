@@ -5,8 +5,8 @@
 // @version      1.0
 // @author       rbits
 // @icon         https://news.ycombinator.com/y18.svg
-// @match        *://localhost*
-// @match        file:///*.html
+// @match        *://localhost/*
+// @match        file:///*
 // @connect      news.ycombinator.com
 // @grant        GM.xmlHttpRequest
 // @license      GPL3

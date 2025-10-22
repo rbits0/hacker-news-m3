@@ -1,5 +1,7 @@
 import { Button, Dialog, Portal, Surface, Text, TextInput, useTheme } from "react-native-paper";
 import { Modal, StyleSheet, View } from "react-native";
+import { signIn } from "@/lib/hackerNewsAccount";
+import { useState } from "react";
 
 
 interface Props {
@@ -11,6 +13,25 @@ interface Props {
 // TODO: Add message telling user to install browser script if necessary
 export default function SignInDialog({ visible, onDismiss }: Props) {
   const theme = useTheme();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSignInPressed = async () => {
+    try {
+      // TODO: Show loading state
+      const success = await signIn(username, password);
+      
+      if (success) {
+        onDismiss();
+      } else {
+        console.error('Failed to sign in');
+        // TODO: Show error message
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <Portal>
@@ -26,17 +47,21 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
             label="Username"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
+            value={username}
+            onChangeText={text => setUsername(text)}
           />
           <TextInput
             label="Password"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
+            value={password}
+            onChangeText={text => setPassword(text)}
             secureTextEntry
           />
         </Dialog.Content>
 
         <Dialog.Actions>
-          <Button>Sign in</Button>
+          <Button onPress={onSignInPressed}>Sign in</Button>
           <Button onPress={onDismiss}>Cancel</Button>
         </Dialog.Actions>
 
