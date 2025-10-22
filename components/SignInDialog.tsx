@@ -16,15 +16,17 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onSignInPressed = async () => {
     try {
-      // TODO: Show loading state
+      setLoading(true);
       const success = await signIn(username, password);
       
       if (success) {
         onDismiss();
       } else {
+        setLoading(false);
         console.error('Failed to sign in');
         // TODO: Show error message
       }
@@ -47,6 +49,7 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
             label="Username"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
+            disabled={loading}
             value={username}
             onChangeText={text => setUsername(text)}
           />
@@ -54,6 +57,7 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
             label="Password"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
+            disabled={loading}
             value={password}
             onChangeText={text => setPassword(text)}
             secureTextEntry
@@ -61,8 +65,18 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
         </Dialog.Content>
 
         <Dialog.Actions>
-          <Button onPress={onSignInPressed}>Sign in</Button>
-          <Button onPress={onDismiss}>Cancel</Button>
+          <Button
+            onPress={onSignInPressed}
+            disabled={loading}
+          >
+            Sign in
+          </Button>
+          <Button
+            onPress={onDismiss}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
         </Dialog.Actions>
 
       </Dialog>
