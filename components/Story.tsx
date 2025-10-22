@@ -7,7 +7,6 @@ import OptionalLink from './OptionalLink';
 import { useGetItemByIdQuery } from '@/store/services/hackerNews';
 import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
-import { useAppSelector } from '@/store/hooks';
 import LinkImage from './LinkImage';
 import { MAX_POST_WIDTH } from '@/app/_layout';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -38,8 +37,6 @@ export default function Story({
   const theme = useTheme();
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   
-  const displayVotes = useAppSelector(state => state.settings.displayVotes);
-
   const {
     data: fetchedItem,
     isLoading: fetchedItemIsLoading,
@@ -86,13 +83,11 @@ export default function Story({
         onSwipeableWillOpen={onVote}
         ref={swipeableRef}
       >
-        {displayVotes ? (
-          <VoteButtonLarge
-            disabled={itemToRender == undefined}
-            score={itemToRender?.score}
-            onPress={() => { /* TODO: Vote */ }}
-          />
-        ) : null}
+        <VoteButtonLarge
+          disabled={itemToRender == undefined}
+          score={itemToRender?.score}
+          onPress={() => { /* TODO: Vote */ }}
+        />
       
         <Surface style={[styles.surface]}>
           <View style={[styles.surfaceRow]}>

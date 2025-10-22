@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import HackerNewsM3Icon from "./HackerNewsM3Icon";
 import { useState } from "react";
+import { useAppSelector } from "@/store/hooks";
 
 
 interface Props {
@@ -13,6 +14,8 @@ interface Props {
 export default function VoteButtonLarge({ disabled, score, onPress }: Props) {
   // TODO: Remove, pass vote state through props instead
   const [voted, setVoted] = useState(false);
+
+  const displayVotes = useAppSelector(state => state.settings.displayVotes);
 
   return (
     <View>
@@ -33,7 +36,9 @@ export default function VoteButtonLarge({ disabled, score, onPress }: Props) {
         style={styles.button}
         disabled={disabled}
       />
-      <Text variant="bodyLarge" style={styles.scoreText}>{score}</Text>
+      {displayVotes ? (
+        <Text variant="bodyLarge" style={styles.scoreText}>{score}</Text>
+      ) : null}
     </View>
   )
 }
