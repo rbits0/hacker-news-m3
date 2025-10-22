@@ -1,6 +1,6 @@
 import Item from '@/store/Item';
 import { Route } from 'expo-router';
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
@@ -15,7 +15,7 @@ interface Props {
   itemIsError?: boolean,
 }
 
-export default function Comment({ item, itemIsLoading, itemIsError }: Props) {
+const Comment = memo(function Comment({ item, itemIsLoading, itemIsError }: Props) {
   // WIP
 
   const theme = useTheme();
@@ -64,7 +64,7 @@ export default function Comment({ item, itemIsLoading, itemIsError }: Props) {
       </Surface>
     </View>
   )
-}
+});
 
 
 const styles = StyleSheet.create({
@@ -100,3 +100,6 @@ const styles = StyleSheet.create({
     margin: 6,
   },
 });
+
+
+export default Comment;

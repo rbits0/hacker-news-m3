@@ -1,6 +1,6 @@
 import Item from '@/store/Item';
 import { ExternalPathString, Route } from 'expo-router';
-import React, { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import OptionalLink from './OptionalLink';
@@ -25,7 +25,7 @@ interface Props {
   disableCommentsLink?: boolean,
 }
 
-export default function Story({
+const Story = memo (function Story({
     item,
     itemIsLoading,
     itemIsError,
@@ -129,7 +129,7 @@ export default function Story({
       </Swipeable>
     </View>
   )
-}
+});
 
 
 const styles = StyleSheet.create({
@@ -176,3 +176,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+
+export default Story;
