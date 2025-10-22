@@ -25,13 +25,19 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
       
       if (success) {
         onDismiss();
+
+        // Set loading back to false after 0.2s, so it happens after the dialog
+        // closing animation finishes.
+        setTimeout(() => setLoading(false), 200);
       } else {
-        setLoading(false);
         console.error('Failed to sign in');
+        setLoading(false);
         // TODO: Show error message
       }
     } catch (e) {
       console.error(e);
+      setLoading(false);
+      // TODO: Show error message
     }
   }
 
