@@ -1,18 +1,17 @@
 import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
 import SignInDialog from '@/components/SignInDialog';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { modifySetting } from '@/store/slices/settings';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { Button, List, useTheme } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
 
 
 export default function SettingsPage() {
   const theme = useTheme();
   const settings = useAppSelector(state => state.settings);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [signInVisible, setSignInVisible] = useState(false);
 
