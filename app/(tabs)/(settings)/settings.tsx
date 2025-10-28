@@ -15,14 +15,16 @@ export default function SettingsPage() {
   const dispatch = useAppDispatch();
 
   const [signInVisible, setSignInVisible] = useState(false);
+  const [signInOutButtonEnabled, setSignInOutButtonEnabled] = useState(false);
   // TODO: Set isSignedIn to true on successful sign in
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
-    // TODO: Disable button until sign in state is checked
-
     checkIsSignedIn()
-      .then(result => setIsSignedIn(result))
+      .then(result => {
+        setIsSignedIn(result);
+        setSignInOutButtonEnabled(true);
+      })
       .catch(reason => {
         console.error(reason);
       });
@@ -64,6 +66,7 @@ export default function SettingsPage() {
           <Button
             mode="contained"
             onPress={onSignOutPressed}
+            disabled={!signInOutButtonEnabled}
             style={styles.signInButton}
           >
             Sign out
@@ -72,6 +75,7 @@ export default function SettingsPage() {
           <Button
             mode="contained"
             onPress={() => setSignInVisible(true)}
+            disabled={!signInOutButtonEnabled}
             style={styles.signInButton}
           >
             Sign in
