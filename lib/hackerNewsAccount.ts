@@ -118,6 +118,16 @@ export async function signOut(): Promise<boolean> {
   return isSignedOut;
 }
 
+/**
+ * Votes for Hacker News item
+ * 
+ * User must be signed in to Hacker News
+ * @param itemId ID of item to vote
+ */
+export async function voteItem(itemId: number) {
+  // TODO: 
+}
+
 
 export function checkCanFetchCors(): boolean {
   return (Platform.OS !== 'web' || window.HackerNewsCORS !== undefined);

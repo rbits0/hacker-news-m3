@@ -1,13 +1,14 @@
 import { Button, Dialog, Portal, Surface, Text, TextInput, useTheme } from "react-native-paper";
 import { Modal, StyleSheet, View } from "react-native";
 import { checkCanFetchCors, signIn } from "@/lib/hackerNewsAccount";
+import { signIn as accountStateSignIn } from "@/store/slices/accountState";
 import { useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
 
 
 interface Props {
   visible: boolean,
   onDismiss: () => void,
-  onSuccessfulSignIn: () => void,
 }
 
 
@@ -15,9 +16,9 @@ interface Props {
 export default function SignInDialog({
   visible,
   onDismiss,
-  onSuccessfulSignIn,
 }: Props) {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -40,8 +41,8 @@ export default function SignInDialog({
     }
     
     if (success) {
+      dispatch(accountStateSignIn(username));
       onDismiss();
-      onSuccessfulSignIn();
 
       // Set loading back to false after 0.2s, so it happens after the dialog
       // closing animation finishes.

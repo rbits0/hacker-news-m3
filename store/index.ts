@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { hackerNewsApi } from './services/hackerNews';
 import settingsReducer from './slices/settings';
+import accountStateReducer from './slices/accountState';
 import { algoliaApi } from './services/algolia';
 import { rememberEnhancer, rememberReducer } from 'redux-remember';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,6 +10,7 @@ const reducers = {
   [hackerNewsApi.reducerPath]: hackerNewsApi.reducer,
   [algoliaApi.reducerPath]: algoliaApi.reducer,
   settings: settingsReducer,
+  accountState: accountStateReducer,
 };
 
 // Note: Strange TypeScript behaviour... right now TypeScript has store typed
@@ -27,7 +29,7 @@ const store = configureStore({
     getDefaultEnhancers()
       .concat(rememberEnhancer(
         AsyncStorage,
-        ['settings'],
+        ['settings', 'accountState'],
       ))
   )
 });
