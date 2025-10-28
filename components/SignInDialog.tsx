@@ -24,24 +24,26 @@ export default function SignInDialog({
   const [loading, setLoading] = useState(false);
 
   const onSignInPressed = async () => {
+    setLoading(true);
+    let success;
     try {
-      setLoading(true);
-      const success = await signIn(username, password);
-      
-      if (success) {
-        onDismiss();
-        onSuccessfulSignIn();
+      success = await signIn(username, password);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      // TODO: Show error message
+      return;
+    }
+    
+    if (success) {
+      onDismiss();
+      onSuccessfulSignIn();
 
-        // Set loading back to false after 0.2s, so it happens after the dialog
-        // closing animation finishes.
-        setTimeout(() => setLoading(false), 200);
-      } else {
-        console.error('Failed to sign in');
-        setLoading(false);
-        // TODO: Show error message
-      }
-    } catch (e) {
-      console.error(e);
+      // Set loading back to false after 0.2s, so it happens after the dialog
+      // closing animation finishes.
+      setTimeout(() => setLoading(false), 200);
+    } else {
+      console.error('Failed to sign in');
       setLoading(false);
       // TODO: Show error message
     }

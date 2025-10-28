@@ -59,6 +59,7 @@ export async function checkIsSignedIn(): Promise<boolean> {
 /**
  * Signs user in to Hacker News
  * @returns True if successfully signed in
+ * @throws {TypeError} Network error
  */
 export async function signIn(username: string, password: string): Promise<boolean> {
   const response = await fetchCors('https://news.ycombinator.com/login', {
@@ -77,6 +78,7 @@ export async function signIn(username: string, password: string): Promise<boolea
 /**
  * Signs user out of Hacker News
  * @returns True if successfuly signed out (even if already signed out)
+ * @throws {TypeError} Network error
  */
 export async function signOut(): Promise<boolean> {
   const homePage = await fetchCors('https://news.ycombinator.com/login', {
@@ -159,23 +161,25 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
         headers: options.headers,
       }
 
+      let response;
       try {
-        const response = await window.HackerNewsCORS.fetch(url, newOptions);
-        const responseHeaders = new Headers(
-          headersStringToObject(response.responseHeaders)
-        );
-
-        return {
-          body: response.response,
-          headers: responseHeaders,
-          status: response.status,
-          statusText: response.statusText,
-          ok: response.status >= 200 && response.status <= 299,
-          url: response.finalUrl,
-        };
+        response = await window.HackerNewsCORS.fetch(url, newOptions);
       } catch (error) {
         throw new TypeError('Failed to fetch url', { cause: error });
       }
+
+      const responseHeaders = new Headers(
+        headersStringToObject(response.responseHeaders)
+      );
+
+      return {
+        body: response.response,
+        headers: responseHeaders,
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.status >= 200 && response.status <= 299,
+        url: response.finalUrl,
+      };
     }
     // Native
     default: {

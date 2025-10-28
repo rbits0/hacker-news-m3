@@ -25,6 +25,8 @@ export default function SettingsPage() {
         setSignInOutButtonEnabled(true);
       })
       .catch(reason => {
+        // If failed to check sign in state, button is not enabled
+        // TODO: Add some way to retry sign in check on failure
         console.error(reason);
       });
   }, [])
@@ -34,10 +36,19 @@ export default function SettingsPage() {
     // Disable button while waiting
     setSignInOutButtonEnabled(false);
 
-    const signOutWasSuccessful = await signOut();
-    // TODO: Show error message if failed to sign out
+    let signOutWasSuccessful
+    try {
+      signOutWasSuccessful = await signOut();
+    } catch (error) {
+      // TODO: Show error message
+      console.error(error)
+    }
+
     if (signOutWasSuccessful) {
       setIsSignedIn(false);
+    } else {
+      // TODO: Show error message
+      console.error('Failed to sign out')
     }
 
     setSignInOutButtonEnabled(true);
