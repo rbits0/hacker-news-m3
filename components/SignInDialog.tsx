@@ -1,6 +1,6 @@
 import { Button, Dialog, Portal, Surface, Text, TextInput, useTheme } from "react-native-paper";
 import { Modal, StyleSheet, View } from "react-native";
-import { signIn } from "@/lib/hackerNewsAccount";
+import { checkCanFetchCors, signIn } from "@/lib/hackerNewsAccount";
 import { useState } from "react";
 
 
@@ -23,8 +23,12 @@ export default function SignInDialog({
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const canFetchCors = checkCanFetchCors();
+
   const onSignInPressed = async () => {
+    // Disable everything while loading
     setLoading(true);
+
     let success;
     try {
       success = await signIn(username, password);
@@ -63,7 +67,7 @@ export default function SignInDialog({
             label="Username"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
-            disabled={loading}
+            disabled={loading || !canFetchCors}
             value={username}
             onChangeText={text => setUsername(text)}
           />
@@ -71,7 +75,7 @@ export default function SignInDialog({
             label="Password"
             mode="outlined"
             style={{ backgroundColor: theme.colors.elevation.level3 }}
-            disabled={loading}
+            disabled={loading || !canFetchCors}
             value={password}
             onChangeText={text => setPassword(text)}
             secureTextEntry
@@ -81,7 +85,7 @@ export default function SignInDialog({
         <Dialog.Actions>
           <Button
             onPress={onSignInPressed}
-            disabled={loading}
+            disabled={loading || !canFetchCors}
           >
             Sign in
           </Button>

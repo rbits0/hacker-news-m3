@@ -1,6 +1,6 @@
 import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
 import SignInDialog from '@/components/SignInDialog';
-import { checkIsSignedIn, signOut } from '@/lib/hackerNewsAccount';
+import { checkCanFetchCors, checkIsSignedIn, signOut } from '@/lib/hackerNewsAccount';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { modifySetting } from '@/store/slices/settings';
 import { useEffect, useState } from 'react';
@@ -19,6 +19,12 @@ export default function SettingsPage() {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
+    if (!checkCanFetchCors()) {
+      setIsSignedIn(false);
+      setSignInOutButtonEnabled(true);
+      return;
+    }
+
     checkIsSignedIn()
       .then(result => {
         setIsSignedIn(result);
