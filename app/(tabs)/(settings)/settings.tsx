@@ -16,7 +16,6 @@ export default function SettingsPage() {
 
   const [signInVisible, setSignInVisible] = useState(false);
   const [signInOutButtonEnabled, setSignInOutButtonEnabled] = useState(false);
-  // TODO: Set isSignedIn to true on successful sign in
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
@@ -32,11 +31,16 @@ export default function SettingsPage() {
 
   
   const onSignOutPressed = async () => {
-    // TODO: Disable button while waiting
+    // Disable button while waiting
+    setSignInOutButtonEnabled(false);
+
     const signOutWasSuccessful = await signOut();
+    // TODO: Show error message if failed to sign out
     if (signOutWasSuccessful) {
       setIsSignedIn(false);
     }
+
+    setSignInOutButtonEnabled(true);
   };
 
   return (
@@ -87,6 +91,7 @@ export default function SettingsPage() {
       <SignInDialog
         visible={signInVisible}
         onDismiss={() => setSignInVisible(false)}
+        onSuccessfulSignIn={() => setIsSignedIn(true)}
       />
     </View>
   );

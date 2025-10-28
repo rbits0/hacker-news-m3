@@ -7,11 +7,16 @@ import { useState } from "react";
 interface Props {
   visible: boolean,
   onDismiss: () => void,
+  onSuccessfulSignIn: () => void,
 }
 
 
 // TODO: Add message telling user to install browser script if necessary
-export default function SignInDialog({ visible, onDismiss }: Props) {
+export default function SignInDialog({
+  visible,
+  onDismiss,
+  onSuccessfulSignIn,
+}: Props) {
   const theme = useTheme();
 
   const [username, setUsername] = useState('');
@@ -25,6 +30,7 @@ export default function SignInDialog({ visible, onDismiss }: Props) {
       
       if (success) {
         onDismiss();
+        onSuccessfulSignIn();
 
         // Set loading back to false after 0.2s, so it happens after the dialog
         // closing animation finishes.
