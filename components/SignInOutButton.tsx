@@ -1,4 +1,4 @@
-import { checkCanFetchCors, checkIsSignedIn, signOut } from "@/lib/hackerNewsAccount";
+import { checkIsSignedIn, signOut } from "@/lib/hackerNewsAccount";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signIn as accountStateSignIn, signOut as accountStateSignOut } from '@/store/slices/accountState';
 import { useEffect, useState } from "react";

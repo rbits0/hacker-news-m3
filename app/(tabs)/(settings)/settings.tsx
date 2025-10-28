@@ -1,13 +1,10 @@
 import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
-import SignInDialog from '@/components/SignInDialog';
 import SignInOutButton from '@/components/SignInOutButton';
-import { checkCanFetchCors, checkIsSignedIn, signOut } from '@/lib/hackerNewsAccount';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { modifySetting } from '@/store/slices/settings';
-import { useEffect, useState } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { Button, List, useTheme } from 'react-native-paper';
+import { List, useTheme } from 'react-native-paper';
 
 
 export default function SettingsPage() {
