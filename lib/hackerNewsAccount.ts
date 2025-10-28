@@ -46,7 +46,41 @@ export async function signIn(username: string, password: string): Promise<boolea
     body: `acct=${username}&pw=${password}`,
   })
 
-  return (response.url === 'https://news.ycombinator.com/');
+  return (response.ok && response.url === 'https://news.ycombinator.com/');
+}
+
+
+export async function signOut(): Promise<boolean> {
+  const homePage = await fetchCors('https://news.ycombinator.com/login', {
+    method: 'GET',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  });
+
+  const logoutRegex = /<a id='logout' rel='nofollow' href="(.*?)"/;
+  const logoutHref = logoutRegex.exec(homePage.body)?.at(1);
+
+  if (!logoutHref) {
+    console.log('Already signed out');
+    return false;
+  }
+
+  const url = `https://news.ycombinator.com/${logoutHref}`;
+  const response = await fetchCors(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  });
+
+  if (!response.ok) {
+    return false;
+  }
+
+  const isSignedOut = logoutRegex.exec(response.body) === null;
+
+  return isSignedOut;
 }
 
 
