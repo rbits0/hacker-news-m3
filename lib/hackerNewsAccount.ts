@@ -35,6 +35,23 @@ declare namespace window.HackerNewsCORS {
 }
 
 
+// Throws error on failure to check login state
+export async function checkIsSignedIn(): Promise<boolean> {
+  const response = await fetchCors('https://news.ycombinator.com/login', {
+    method: 'GET',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to check login state');
+  }
+
+  return (response.url === 'https://news.ycombinator.com/');
+}
+
+
 // Returns true on successful sign in
 export async function signIn(username: string, password: string): Promise<boolean> {
   const response = await fetchCors('https://news.ycombinator.com/login', {
@@ -44,7 +61,7 @@ export async function signIn(username: string, password: string): Promise<boolea
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: `acct=${username}&pw=${password}`,
-  })
+  });
 
   return (response.ok && response.url === 'https://news.ycombinator.com/');
 }
@@ -69,7 +86,7 @@ export async function signOut(): Promise<boolean> {
 
   if (!logoutHref) {
     console.log('Already signed out');
-    return false;
+    return true;
   }
 
   const url = `https://news.ycombinator.com/${logoutHref}`;
