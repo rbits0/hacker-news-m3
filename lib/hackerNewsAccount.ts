@@ -50,6 +50,7 @@ export async function signIn(username: string, password: string): Promise<boolea
 }
 
 
+// Returns true on successful sign out (even if already signed out)
 export async function signOut(): Promise<boolean> {
   const homePage = await fetchCors('https://news.ycombinator.com/login', {
     method: 'GET',
@@ -57,6 +58,11 @@ export async function signOut(): Promise<boolean> {
       Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     },
   });
+
+  if (homePage.url.startsWith('https://news.ycombinator.com/login')) {
+    console.log('Already signed out');
+    return true;
+  }
 
   const logoutRegex = /<a id='logout' rel='nofollow' href="(.*?)"/;
   const logoutHref = logoutRegex.exec(homePage.body)?.at(1);
