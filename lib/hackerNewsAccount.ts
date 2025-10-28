@@ -35,7 +35,11 @@ declare namespace window.HackerNewsCORS {
 }
 
 
-// Throws error on failure to check login state
+/**
+ * Checks if user is signed in to Hacker News
+ * @returns True if user is signed in, false if user is signed out
+ * @throws Will throw error on failure to check login state
+ */
 export async function checkIsSignedIn(): Promise<boolean> {
   const response = await fetchCors('https://news.ycombinator.com/login', {
     method: 'GET',
@@ -52,7 +56,10 @@ export async function checkIsSignedIn(): Promise<boolean> {
 }
 
 
-// Returns true on successful sign in
+/**
+ * Signs user in to Hacker News
+ * @returns True if successfully signed in
+ */
 export async function signIn(username: string, password: string): Promise<boolean> {
   const response = await fetchCors('https://news.ycombinator.com/login', {
     method: 'POST',
@@ -67,7 +74,10 @@ export async function signIn(username: string, password: string): Promise<boolea
 }
 
 
-// Returns true on successful sign out (even if already signed out)
+/**
+ * Signs user out of Hacker News
+ * @returns True if successfuly signed out (even if already signed out)
+ */
 export async function signOut(): Promise<boolean> {
   const homePage = await fetchCors('https://news.ycombinator.com/login', {
     method: 'GET',
@@ -107,8 +117,22 @@ export async function signOut(): Promise<boolean> {
 }
 
 
+export function checkCanFetchCors(): boolean {
+  return (Platform.OS !== 'web' || window.HackerNewsCORS !== undefined);
+}
+
+
+/**
+ * Fetch, bypassing CORS on both web and native
+ * 
+ * Requires HackerNewsCORS script if on web (use `checkCanFetchCors`)
+ * @param url URL to fetch
+ * @param options Options to use in fetch (some headers will be overwritten)
+ * @returns Response
+ * @throws {TypeError} Network error
+ */
 async function fetchCors(url: string, options: RequestOptions): Promise<CorsResponse> {
-  if (Platform.OS === 'web' && !window.HackerNewsCORS) {
+  if (!checkCanFetchCors()) {
     throw new Error('HackerNewsCORS is required');
   }
 
@@ -135,23 +159,32 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
         headers: options.headers,
       }
 
-      const response = await window.HackerNewsCORS.fetch(url, newOptions);
-      const responseHeaders = new Headers(
-        headersStringToObject(response.responseHeaders)
-      );
+      try {
+        const response = await window.HackerNewsCORS.fetch(url, newOptions);
+        const responseHeaders = new Headers(
+          headersStringToObject(response.responseHeaders)
+        );
 
-      return {
-        body: response.response,
-        headers: responseHeaders,
-        status: response.status,
-        statusText: response.statusText,
-        ok: response.status >= 200 && response.status <= 299,
-        url: response.finalUrl,
-      };
+        return {
+          body: response.response,
+          headers: responseHeaders,
+          status: response.status,
+          statusText: response.statusText,
+          ok: response.status >= 200 && response.status <= 299,
+          url: response.finalUrl,
+        };
+      } catch (error) {
+        throw new TypeError('Failed to fetch url', { cause: error });
+      }
     }
     // Native
     default: {
-      const response = await fetch(url, options);
+      let response: Response;
+      try {
+        response = await fetch(url, options);
+      } catch (error) { 
+        throw new TypeError('Failed to fetch url', { cause: error });
+      };
 
       return {
         body: await response.text(),
@@ -161,7 +194,7 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
         ok: response.ok,
         url: response.url,
       };
-    }
+  }
   }
 }
 
