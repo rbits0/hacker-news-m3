@@ -2,7 +2,7 @@
 
 [Hacker News](https://news.ycombinator.com) client using Material Design 3.
 
-![Screenshot](preview.png)
+<img src="preview.png" alt="screenshot" width=250>
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
