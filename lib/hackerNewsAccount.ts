@@ -153,13 +153,13 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
   }
 
   // Set CORS headers
-  options.headers['Host'] = 'news.ycombinator.com';
-  options.headers['Referer'] = 'https://news.ycombinator.com/';
-  options.headers['Origin'] = 'https://news.ycombinator.com';
-  options.headers['Sec-Fetch-Dest'] = 'document';
-  options.headers['Sec-Fetch-Mode'] = 'navigate';
-  options.headers['Sec-Fetch-Site'] = 'same-origin';
-  options.headers['Sec-Fetch-User'] = '?1';
+  options.headers['Host'] ??= 'news.ycombinator.com';
+  options.headers['Referer'] ??= 'https://news.ycombinator.com/';
+  options.headers['Origin'] ??= 'https://news.ycombinator.com';
+  options.headers['Sec-Fetch-Dest'] ??= 'document';
+  options.headers['Sec-Fetch-Mode'] ??= 'navigate';
+  options.headers['Sec-Fetch-Site'] ??= 'same-origin';
+  options.headers['Sec-Fetch-User'] ??= '?1';
 
 
   switch(Platform.OS) {
