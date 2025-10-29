@@ -34,6 +34,20 @@ declare namespace window.HackerNewsCORS {
   }>;
 }
 
+export class AlreadyDoneError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = 'AlreadyDoneError';
+  }
+}
+
+export class NotSignedInError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = 'NotSignedInError';
+  }
+}
+
 
 /**
  * Checks if user is signed in to Hacker News
@@ -123,9 +137,58 @@ export async function signOut(): Promise<boolean> {
  * 
  * User must be signed in to Hacker News
  * @param itemId ID of item to vote
+ * @throws {TypeError} Network error
+ * @throws {NotSignedInError} User is not signed in
+ * @throws {AlreadyDoneError} User has already voted this item
+ * @throws {Error} Unable to vote for some other reason
  */
 export async function voteItem(itemId: number) {
-  // TODO: 
+  const itemUrl = `https://news.ycombinator.com/item?id=${itemId}`;
+  const itemPage = await fetchCors(itemUrl, {
+    method: 'GET',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  });
+
+  if (!itemPage.ok) {
+    throw new Error('Unable to fetch item page');
+  }
+
+  const voteRegex = new RegExp(
+    `<a [^>]* href='vote\\?id=${itemId}&amp;how=up&amp;auth=(.*?)&`
+  )
+  const voteAuth = voteRegex.exec(itemPage.body)?.at(1);
+
+  if (!voteAuth) {
+    // Couldn't find vote url
+    if ((/<a href="login\?.*?">login<\/a>/).test(itemPage.body)) {
+      throw new NotSignedInError('User must be signed in to vote');
+    } else if (new RegExp(`<a id='un_${itemId}'`).test(itemPage.body)) {
+      throw new AlreadyDoneError('Cannot vote for item that is already voted')
+    } else {
+      console.log(itemPage.body);
+      console.log(voteRegex);
+      console.log(voteRegex.exec(itemPage.body));
+      throw new Error('Failed to parse item page');
+    }
+  }
+
+  const voteUrl = `https://news.ycombinator.com/vote?id=${itemId}&how=up&auth=${voteAuth}&js=t`;
+  const voteResponse = await fetchCors(voteUrl, {
+    method: 'GET',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Sec-Fetch-Dest': 'image',
+      'Sec-Fetch-Mode': 'no-cors',
+    },
+  });
+
+  if (!voteResponse.ok || voteResponse.url !== 'https://news.ycombinator.com/ok') {
+    console.log(voteUrl);
+    console.log(voteResponse);
+    throw new Error('Vote failed');
+  }
 }
 
 
@@ -139,7 +202,7 @@ export function checkCanFetchCors(): boolean {
  * 
  * Requires HackerNewsCORS script if on web (use `checkCanFetchCors`)
  * @param url URL to fetch
- * @param options Options to use in fetch (some headers will be overwritten)
+ * @param options Options to use in fetch
  * @returns Response
  * @throws {TypeError} Network error
  */
