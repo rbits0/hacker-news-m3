@@ -1,1 +1,7 @@
-components/MaterialSwitchListItem.tsx
+/components/MaterialSwitchListItem.tsx
+/.expo
+/.vscode
+/android
+/app-example
+/dist
+/ios
