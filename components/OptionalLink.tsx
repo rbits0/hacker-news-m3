@@ -1,5 +1,4 @@
 import { Href, Link, LinkProps } from 'expo-router';
-import React from 'react';
 import { PropsWithChildren } from 'react';
 
 

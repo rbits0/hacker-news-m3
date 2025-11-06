@@ -84,7 +84,7 @@ const Story = memo (function Story({
         ref={swipeableRef}
       >
         <VoteButtonLarge
-          disabled={itemToRender == undefined}
+          disabled={itemToRender === undefined}
           score={itemToRender?.score}
           onPress={() => { /* TODO: Vote */ }}
         />

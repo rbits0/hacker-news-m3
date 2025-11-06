@@ -132,6 +132,7 @@ export async function signOut(): Promise<boolean> {
   return isSignedOut;
 }
 
+
 /**
  * Votes for Hacker News item
  * 
