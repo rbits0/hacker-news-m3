@@ -2,8 +2,7 @@ import { MaterialSwitchListItem } from '@/components/MaterialSwitchListItem';
 import SignInOutButton from '@/components/SignInOutButton';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { modifySetting } from '@/store/slices/settings';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { List, useTheme } from 'react-native-paper';
 
 

@@ -1,4 +1,4 @@
-import {  Text, useTheme } from "react-native-paper"
+import {  Text } from "react-native-paper"
 import { useMemo } from "react";
 import { ExternalPathString } from "expo-router";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";

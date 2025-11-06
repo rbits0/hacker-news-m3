@@ -41,7 +41,7 @@ const Comment = memo(function Comment({ item, itemIsLoading, itemIsError }: Prop
 
       {displayVotes && largeVoteButton ? (
         <VoteButtonLarge
-          disabled={item == undefined}
+          disabled={item === undefined}
           score={item?.score}
           onPress={() => { /* TODO: Vote */ }}
         />

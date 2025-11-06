@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { StyleProp, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { Surface, Text, useTheme } from "react-native-paper";
 
 

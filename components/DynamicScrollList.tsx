@@ -2,7 +2,7 @@
 // Uses React Native FlatList
 
 import React, { useCallback, useState } from "react"
-import { FlatList, FlatListProps, ListRenderItem, StyleProp, ViewStyle, ViewToken } from "react-native"
+import { FlatList, FlatListProps, ViewToken } from "react-native"
 
 
 interface DynamicScrollListProps<ItemT> extends FlatListProps<ItemT> {

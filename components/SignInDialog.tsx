@@ -1,5 +1,5 @@
-import { Button, Dialog, Portal, Surface, Text, TextInput, useTheme } from "react-native-paper";
-import { Modal, StyleSheet, View } from "react-native";
+import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
+import { StyleSheet } from "react-native";
 import { checkCanFetchCors, signIn } from "@/lib/hackerNewsAccount";
 import { signIn as accountStateSignIn } from "@/store/slices/accountState";
 import { useState } from "react";

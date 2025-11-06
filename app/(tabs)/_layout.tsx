@@ -1,4 +1,3 @@
-import NavigationBar from '@/components/NavigationBar';
 import { Tabs } from 'expo-router';
 import TabBar from '@/components/TabBar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
