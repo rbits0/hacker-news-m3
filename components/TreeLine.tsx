@@ -1,6 +1,5 @@
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
-
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function TreeLine() {
   const theme = useTheme();
@@ -9,9 +8,8 @@ export default function TreeLine() {
     <View style={styles.container}>
       <View style={[styles.line, { backgroundColor: theme.colors.outline }]} />
     </View>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {

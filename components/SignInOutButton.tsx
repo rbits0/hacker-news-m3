@@ -1,19 +1,20 @@
-import { checkIsSignedIn, signOut } from "@/lib/hackerNewsAccount";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { signIn as accountStateSignIn, signOut as accountStateSignOut } from '@/store/slices/accountState';
-import { useEffect, useState } from "react";
-import { Platform, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
-import SignInDialog from "@/components/SignInDialog";
-
+import { checkIsSignedIn, signOut } from '@/lib/hackerNewsAccount';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  signIn as accountStateSignIn,
+  signOut as accountStateSignOut,
+} from '@/store/slices/accountState';
+import { useEffect, useState } from 'react';
+import { Platform, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
+import SignInDialog from '@/components/SignInDialog';
 
 interface Props {
-  onErrorMessage: (message: string) => void,
+  onErrorMessage: (message: string) => void;
 }
 
-
-export default function SignInOutButton({ onErrorMessage }: Props ) {
-  const isSignedIn = useAppSelector(state => state.accountState.isSignedIn);
+export default function SignInOutButton({ onErrorMessage }: Props) {
+  const isSignedIn = useAppSelector((state) => state.accountState.isSignedIn);
   const dispatch = useAppDispatch();
 
   const [signInVisible, setSignInVisible] = useState(false);
@@ -21,7 +22,7 @@ export default function SignInOutButton({ onErrorMessage }: Props ) {
 
   useEffect(() => {
     checkIsSignedIn()
-      .then(result => {
+      .then((result) => {
         if (isSignedIn && !result) {
           // User was signed in, but check says they aren't
           dispatch(accountStateSignOut());
@@ -35,7 +36,7 @@ export default function SignInOutButton({ onErrorMessage }: Props ) {
             // TODO: Get account username
           } else {
             // If not on web, this shouldn't happen
-            console.error('User is signed in when they shouldn\'t be');
+            console.error("User is signed in when they shouldn't be");
             // Try to sign out
             try {
               const result = signOut();
@@ -46,20 +47,18 @@ export default function SignInOutButton({ onErrorMessage }: Props ) {
               console.error('Failed to sign out', error);
             }
           }
-
         }
       })
-      .catch(reason => {
+      .catch((reason) => {
         console.error(reason);
       });
-  }, [])
+  }, []);
 
-  
   const onSignOutPressed = async () => {
     // Disable button while waiting
     setEnabled(false);
 
-    let signOutWasSuccessful
+    let signOutWasSuccessful;
     try {
       signOutWasSuccessful = await signOut();
     } catch (error) {
@@ -77,35 +76,34 @@ export default function SignInOutButton({ onErrorMessage }: Props ) {
     setEnabled(true);
   };
 
+  return (
+    <>
+      {isSignedIn ?
+        <Button
+          mode="contained"
+          onPress={onSignOutPressed}
+          disabled={!enabled}
+          style={styles.signInButton}
+        >
+          Sign out
+        </Button>
+      : <Button
+          mode="contained"
+          onPress={() => setSignInVisible(true)}
+          disabled={!enabled}
+          style={styles.signInButton}
+        >
+          Sign in
+        </Button>
+      }
 
-  return (<>
-    {isSignedIn ? (
-      <Button
-        mode="contained"
-        onPress={onSignOutPressed}
-        disabled={!enabled}
-        style={styles.signInButton}
-      >
-        Sign out
-      </Button>
-    ) : (
-      <Button
-        mode="contained"
-        onPress={() => setSignInVisible(true)}
-        disabled={!enabled}
-        style={styles.signInButton}
-      >
-        Sign in
-      </Button>
-    )}
-
-    <SignInDialog
-      visible={signInVisible}
-      onDismiss={() => setSignInVisible(false)}
-    />
-  </>);
+      <SignInDialog
+        visible={signInVisible}
+        onDismiss={() => setSignInVisible(false)}
+      />
+    </>
+  );
 }
-
 
 const styles = StyleSheet.create({
   signInButton: {

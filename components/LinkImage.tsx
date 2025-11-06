@@ -1,12 +1,11 @@
-import { Surface, useTheme } from "react-native-paper";
-import OptionalLink from "./OptionalLink";
-import { ExternalPathString } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
-
+import { Surface, useTheme } from 'react-native-paper';
+import OptionalLink from './OptionalLink';
+import { ExternalPathString } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 
 interface Props {
-  href: ExternalPathString | undefined,
+  href: ExternalPathString | undefined;
 }
 
 export default function LinkImage({ href }: Props) {
@@ -25,7 +24,6 @@ export default function LinkImage({ href }: Props) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     width: 44,
@@ -35,4 +33,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-})
+});

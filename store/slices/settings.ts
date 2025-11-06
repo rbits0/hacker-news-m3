@@ -1,12 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "..";
-import { Platform } from "react-native";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from '..';
+import { Platform } from 'react-native';
 
 interface Settings {
-  displayVotes: boolean,
-  commentsLargeVoteButton: boolean,
+  displayVotes: boolean;
+  commentsLargeVoteButton: boolean;
 }
 
 // React Native does not support structuredClone()
@@ -20,7 +19,6 @@ function defaultSettings(): Settings {
   };
 }
 
-
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState: defaultSettings(),
@@ -31,10 +29,9 @@ export const settingsSlice = createSlice({
     ) => {
       const [key, value] = action.payload;
       state[key] = value;
-    }
+    },
   },
 });
-
 
 export const { modifySetting } = settingsSlice.actions;
 export default settingsSlice.reducer;

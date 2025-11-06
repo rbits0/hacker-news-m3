@@ -20,20 +20,15 @@ const reducer = rememberReducer(reducers);
 
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => (
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(hackerNewsApi.middleware)
-      .concat(algoliaApi.middleware)
-  ),
-  enhancers: (getDefaultEnhancers) => (
-    getDefaultEnhancers()
-      .concat(rememberEnhancer(
-        AsyncStorage,
-        ['settings', 'accountState'],
-      ))
-  )
+      .concat(algoliaApi.middleware),
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat(
+      rememberEnhancer(AsyncStorage, ['settings', 'accountState']),
+    ),
 });
-
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

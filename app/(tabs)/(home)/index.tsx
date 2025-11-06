@@ -1,15 +1,16 @@
 import Story from '@/components/Story';
-import { StoriesType, useGetFrontPageIdsByStoriesTypeQuery } from '@/store/services/hackerNews';
+import {
+  StoriesType,
+  useGetFrontPageIdsByStoriesTypeQuery,
+} from '@/store/services/hackerNews';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { LARGE_WIDTH } from '@/app/_layout';
 import DynamicScrollList from '@/components/DynamicScrollList';
 
-
 // Number of stories to load at a time.
 // A "page" refers to a batch of stories being loaded
 const NUM_STORIES_PER_PAGE = 20;
-
 
 export default function Index() {
   const theme = useTheme();
@@ -21,7 +22,6 @@ export default function Index() {
     isSuccess: itemsQueryIsSuccess,
     isLoading: itemsAreLoading,
   } = useGetFrontPageIdsByStoriesTypeQuery(StoriesType.Top);
-
 
   return (
     <View
@@ -37,7 +37,6 @@ export default function Index() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

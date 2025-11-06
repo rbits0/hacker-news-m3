@@ -1,23 +1,21 @@
-import Comment from "./Comment";
-import { StyleSheet, View } from "react-native";
-import { MAX_POST_WIDTH } from "@/app/_layout";
-import TreeLine from "./TreeLine";
-import AlgoliaItem, { algoliaItemToItem } from "@/store/AlgoliaItem";
-
+import Comment from './Comment';
+import { StyleSheet, View } from 'react-native';
+import { MAX_POST_WIDTH } from '@/app/_layout';
+import TreeLine from './TreeLine';
+import AlgoliaItem, { algoliaItemToItem } from '@/store/AlgoliaItem';
 
 interface Props {
-  item: AlgoliaItem,
-  itemId?: number,
+  item: AlgoliaItem;
+  itemId?: number;
 }
 
 export default function CommentTree({ item, itemId }: Props) {
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
+        <Comment item={algoliaItemToItem(item)} />
 
-        <Comment item={algoliaItemToItem(item)}/>
-
-        {item.children.length > 0 ? (
+        {item.children.length > 0 ?
           <View style={styles.indentContainer}>
             <TreeLine />
             <View style={styles.childrenContainer}>
@@ -26,13 +24,11 @@ export default function CommentTree({ item, itemId }: Props) {
               ))}
             </View>
           </View>
-        ) : null}
-
+        : null}
       </View>
     </View>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -49,5 +45,5 @@ const styles = StyleSheet.create({
   childrenContainer: {
     gap: 10,
     flex: 1,
-  }
-})
+  },
+});

@@ -6,14 +6,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{ header: () => null }}
-      tabBar={props => <TabBar {...props} />}
+      tabBar={(props) => <TabBar {...props} />}
     >
       <Tabs.Screen
         name="(home)"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size}/>
+            <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
       />
@@ -22,7 +22,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cog" color={color} size={size}/>
+            <MaterialCommunityIcons name="cog" color={color} size={size} />
           ),
         }}
       />

@@ -1,18 +1,24 @@
-import { PropsWithChildren } from "react";
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
-import { Surface, Text, useTheme } from "react-native-paper";
-
+import { PropsWithChildren } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Surface, Text, useTheme } from 'react-native-paper';
 
 interface Props {
-  style?: StyleProp<ViewStyle>,
+  style?: StyleProp<ViewStyle>;
 }
 
-export default function CodeBlock({ style, children }: PropsWithChildren<Props>) {
+export default function CodeBlock({
+  style,
+  children,
+}: PropsWithChildren<Props>) {
   const theme = useTheme();
 
   return (
     <Surface
-      style={[styles.surface, { backgroundColor: theme.colors.elevation.level2 }, style]}
+      style={[
+        styles.surface,
+        { backgroundColor: theme.colors.elevation.level2 },
+        style,
+      ]}
     >
       <Text variant="bodyMedium" style={styles.text}>
         {children}
@@ -20,7 +26,6 @@ export default function CodeBlock({ style, children }: PropsWithChildren<Props>)
     </Surface>
   );
 }
-
 
 const styles = StyleSheet.create({
   surface: {
@@ -31,6 +36,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   text: {
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
 });

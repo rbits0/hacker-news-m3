@@ -1,23 +1,25 @@
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { configureFonts, MD3DarkTheme, PaperProvider } from 'react-native-paper';
+import {
+  configureFonts,
+  MD3DarkTheme,
+  PaperProvider,
+} from 'react-native-paper';
 import { Provider } from 'react-redux';
 import store from '@/store';
 import { Platform, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
 
-
 export const LARGE_WIDTH = 700;
 export const MAX_POST_WIDTH = 1000;
-
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'hackernewsm3icons': require('@/assets/fonts/hackernewsm3icons.ttf'),
+    hackernewsm3icons: require('@/assets/fonts/hackernewsm3icons.ttf'),
   });
   const { width } = useWindowDimensions();
 
@@ -45,16 +47,15 @@ export default function RootLayout() {
     bodyMedium: {
       fontSize: 16,
       lineHeight: 24,
-    }
-  }
+    },
+  };
 
   const fontConfig = width < LARGE_WIDTH ? defaultFontConfig : largeFontConfig;
-
 
   const theme = {
     ...MD3DarkTheme,
     fonts: configureFonts({ config: fontConfig }),
-  }
+  };
 
   // Hide splash screen once fonts are loaded
   useEffect(() => {
@@ -63,14 +64,13 @@ export default function RootLayout() {
     }
   }, [loaded, error]);
 
-
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <GestureHandlerRootView>
           <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)"/>
-            <Stack.Screen name="+not-found"/>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
           </Stack>
         </GestureHandlerRootView>
       </PaperProvider>

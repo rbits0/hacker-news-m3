@@ -7,7 +7,6 @@ export enum StoriesType {
   Best,
 }
 
-
 export const hackerNewsApi = createApi({
   reducerPath: 'hackerNewsApi',
   baseQuery: fetchBaseQuery({
@@ -20,23 +19,24 @@ export const hackerNewsApi = createApi({
   }),
 
   endpoints: (builder) => ({
-
     getItemById: builder.query<Item, number>({
       query: (id) => `item/${id}.json`,
     }),
-    
+
     getFrontPageIdsByStoriesType: builder.query<[number], StoriesType>({
       query: (storiesType) => {
         switch (storiesType) {
-          case StoriesType.New: return 'newstories.json';
-          case StoriesType.Top: return 'topstories.json';
-          case StoriesType.Best: return 'beststories.json';
+          case StoriesType.New:
+            return 'newstories.json';
+          case StoriesType.Top:
+            return 'topstories.json';
+          case StoriesType.Best:
+            return 'beststories.json';
         }
-      }
+      },
     }),
-
   }),
 });
 
-
-export const { useGetItemByIdQuery, useGetFrontPageIdsByStoriesTypeQuery } = hackerNewsApi;
+export const { useGetItemByIdQuery, useGetFrontPageIdsByStoriesTypeQuery } =
+  hackerNewsApi;

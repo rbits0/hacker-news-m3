@@ -1,36 +1,38 @@
 // Actions requiring an authorised Hacker News account
 
-import { Platform } from "react-native";
-
+import { Platform } from 'react-native';
 
 interface CorsResponse {
-  body: string,
-  headers: Headers,
-  status: number,
-  statusText: string,
-  ok: boolean,
-  url: string,
+  body: string;
+  headers: Headers;
+  status: number;
+  statusText: string;
+  ok: boolean;
+  url: string;
 }
 
 interface RequestOptions {
-  method?: string,
-  body?: string,
-  headers?: Record<string, string>,
+  method?: string;
+  body?: string;
+  headers?: Record<string, string>;
 }
 
 interface HackerNewsCorsOptions {
-  method: string,
-  data?: string,
-  headers?: Record<string, string>,
+  method: string;
+  data?: string;
+  headers?: Record<string, string>;
 }
 
 declare namespace window.HackerNewsCORS {
-  function fetch(url: string, options: HackerNewsCorsOptions): Promise<{
-    response: string,
-    responseHeaders: string,
-    status: number,
-    statusText: string,
-    finalUrl: string,
+  function fetch(
+    url: string,
+    options: HackerNewsCorsOptions,
+  ): Promise<{
+    response: string;
+    responseHeaders: string;
+    status: number;
+    statusText: string;
+    finalUrl: string;
   }>;
 }
 
@@ -47,7 +49,6 @@ export class NotSignedInError extends Error {
     this.name = 'NotSignedInError';
   }
 }
-
 
 /**
  * Checks if user is signed in to Hacker News
@@ -66,16 +67,18 @@ export async function checkIsSignedIn(): Promise<boolean> {
     throw new Error('Failed to check login state');
   }
 
-  return (response.url === 'https://news.ycombinator.com/');
+  return response.url === 'https://news.ycombinator.com/';
 }
-
 
 /**
  * Signs user in to Hacker News
  * @returns True if successfully signed in
  * @throws {TypeError} Network error
  */
-export async function signIn(username: string, password: string): Promise<boolean> {
+export async function signIn(
+  username: string,
+  password: string,
+): Promise<boolean> {
   const response = await fetchCors('https://news.ycombinator.com/login', {
     method: 'POST',
     headers: {
@@ -85,9 +88,8 @@ export async function signIn(username: string, password: string): Promise<boolea
     body: `acct=${username}&pw=${password}`,
   });
 
-  return (response.ok && response.url === 'https://news.ycombinator.com/');
+  return response.ok && response.url === 'https://news.ycombinator.com/';
 }
-
 
 /**
  * Signs user out of Hacker News
@@ -132,10 +134,9 @@ export async function signOut(): Promise<boolean> {
   return isSignedOut;
 }
 
-
 /**
  * Votes for Hacker News item
- * 
+ *
  * User must be signed in to Hacker News
  * @param itemId ID of item to vote
  * @throws {TypeError} Network error
@@ -157,16 +158,16 @@ export async function voteItem(itemId: number) {
   }
 
   const voteRegex = new RegExp(
-    `<a [^>]* href='vote\\?id=${itemId}&amp;how=up&amp;auth=(.*?)&`
-  )
+    `<a [^>]* href='vote\\?id=${itemId}&amp;how=up&amp;auth=(.*?)&`,
+  );
   const voteAuth = voteRegex.exec(itemPage.body)?.at(1);
 
   if (!voteAuth) {
     // Couldn't find vote url
-    if ((/<a href="login\?.*?">login<\/a>/).test(itemPage.body)) {
+    if (/<a href="login\?.*?">login<\/a>/.test(itemPage.body)) {
       throw new NotSignedInError('User must be signed in to vote');
     } else if (new RegExp(`<a id='un_${itemId}'`).test(itemPage.body)) {
-      throw new AlreadyDoneError('Cannot vote for item that is already voted')
+      throw new AlreadyDoneError('Cannot vote for item that is already voted');
     } else {
       console.log(itemPage.body);
       console.log(voteRegex);
@@ -185,29 +186,33 @@ export async function voteItem(itemId: number) {
     },
   });
 
-  if (!voteResponse.ok || voteResponse.url !== 'https://news.ycombinator.com/ok') {
+  if (
+    !voteResponse.ok ||
+    voteResponse.url !== 'https://news.ycombinator.com/ok'
+  ) {
     console.log(voteUrl);
     console.log(voteResponse);
     throw new Error('Vote failed');
   }
 }
 
-
 export function checkCanFetchCors(): boolean {
-  return (Platform.OS !== 'web' || window.HackerNewsCORS !== undefined);
+  return Platform.OS !== 'web' || window.HackerNewsCORS !== undefined;
 }
-
 
 /**
  * Fetch, bypassing CORS on both web and native
- * 
+ *
  * Requires HackerNewsCORS script if on web (use `checkCanFetchCors`)
  * @param url URL to fetch
  * @param options Options to use in fetch
  * @returns Response
  * @throws {TypeError} Network error
  */
-async function fetchCors(url: string, options: RequestOptions): Promise<CorsResponse> {
+async function fetchCors(
+  url: string,
+  options: RequestOptions,
+): Promise<CorsResponse> {
   if (!checkCanFetchCors()) {
     throw new Error('HackerNewsCORS is required');
   }
@@ -225,15 +230,14 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
   options.headers['Sec-Fetch-Site'] ??= 'same-origin';
   options.headers['Sec-Fetch-User'] ??= '?1';
 
-
-  switch(Platform.OS) {
+  switch (Platform.OS) {
     case 'web': {
       // Convert options to other format
       const newOptions: HackerNewsCorsOptions = {
         method: options.method ?? 'GET',
         data: options.body?.toString(),
         headers: options.headers,
-      }
+      };
 
       let response;
       try {
@@ -243,7 +247,7 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
       }
 
       const responseHeaders = new Headers(
-        headersStringToObject(response.responseHeaders)
+        headersStringToObject(response.responseHeaders),
       );
 
       return {
@@ -260,9 +264,9 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
       let response: Response;
       try {
         response = await fetch(url, options);
-      } catch (error) { 
+      } catch (error) {
         throw new TypeError('Failed to fetch url', { cause: error });
-      };
+      }
 
       return {
         body: await response.text(),
@@ -272,23 +276,22 @@ async function fetchCors(url: string, options: RequestOptions): Promise<CorsResp
         ok: response.ok,
         url: response.url,
       };
-  }
+    }
   }
 }
-
 
 function headersStringToObject(headers: string): Record<string, string> {
   return Object.fromEntries(
     headers
       .split('\r\n')
-      .filter(value => value.length > 0)
+      .filter((value) => value.length > 0)
       .map((value) => {
         const splitIndex = value.indexOf(':');
         const hasSpace = value[splitIndex + 1] === ' ';
         return [
           value.slice(0, splitIndex),
-          value.slice(splitIndex + (hasSpace ? 2 : 1))
+          value.slice(splitIndex + (hasSpace ? 2 : 1)),
         ];
-      })
+      }),
   );
 }

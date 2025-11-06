@@ -1,11 +1,10 @@
-import {  Text } from "react-native-paper"
-import { useMemo } from "react";
-import { ExternalPathString } from "expo-router";
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { DOMParser } from "xmldom"; // Required for native version
-import CodeBlock from "./CodeBlock";
-import TextLink from "./TextLink";
-
+import { Text } from 'react-native-paper';
+import { useMemo } from 'react';
+import { ExternalPathString } from 'expo-router';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { DOMParser } from 'xmldom'; // Required for native version
+import CodeBlock from './CodeBlock';
+import TextLink from './TextLink';
 
 const INLINE_ELEMENTS = ['a', 'i'];
 
@@ -15,22 +14,15 @@ enum NodeType {
 }
 
 interface Props {
-  text: string,
-  style?: StyleProp<ViewStyle>,
+  text: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function TextBody({ text, style }: Props) {
-  const bodyList = useMemo(() => (
-    parseHTML(text)
-  ), [text]);
+  const bodyList = useMemo(() => parseHTML(text), [text]);
 
-  return (
-    <View style={[styles.container, style]}>
-      {bodyList}
-    </View>
-  );
+  return <View style={[styles.container, style]}>{bodyList}</View>;
 }
-
 
 // Parses HTML into a list of JSX elements
 function parseHTML(html: string): (JSX.Element | null)[] {
@@ -45,7 +37,7 @@ function parseHTML(html: string): (JSX.Element | null)[] {
 
   let looseNodes = [];
   let looseDone = false;
-  let jsxElements = []; 
+  let jsxElements = [];
   let key = 0;
 
   // xmldom doesn't have iterator; must use old-fashioned loop
@@ -53,8 +45,8 @@ function parseHTML(html: string): (JSX.Element | null)[] {
     const node = root[i];
 
     if (
-      node.nodeType === NodeType.TEXT
-      || INLINE_ELEMENTS.includes(node.nodeName)
+      node.nodeType === NodeType.TEXT ||
+      INLINE_ELEMENTS.includes(node.nodeName)
     ) {
       // Handle loose nodes (not wrapped in <p>)
       // Include all text nodes and inline elements
@@ -85,14 +77,9 @@ function parseHTML(html: string): (JSX.Element | null)[] {
   return jsxElements;
 }
 
-
-function parseElement(
-  element: Element,
-  key: string
-): JSX.Element | null {
+function parseElement(element: Element, key: string): JSX.Element | null {
   // xmldom uses lowercase tagName instead of uppercase
   switch (element.tagName) {
-
     case 'br':
       return null;
 
@@ -105,7 +92,7 @@ function parseElement(
           {element.textContent}
         </TextLink>
       );
-    
+
     case 'i':
       return (
         <Text variant="bodyMedium" style={styles.italicText} key={key}>
@@ -117,17 +104,14 @@ function parseElement(
       if (element.firstChild?.nodeName === 'code') {
         // Remove extra indentation
         const textContent = element.firstChild.textContent || '';
-        const text = textContent.split('\n').map(
-          line => line.slice(2, line.length)
-        ).join('\n');
+        const text = textContent
+          .split('\n')
+          .map((line) => line.slice(2, line.length))
+          .join('\n');
 
-        return (
-          <CodeBlock key={key}>
-            {text}
-          </CodeBlock>
-        );
+        return <CodeBlock key={key}>{text}</CodeBlock>;
       } else {
-        console.error('Found <pre> element without child <code> element')
+        console.error('Found <pre> element without child <code> element');
 
         return (
           <Text variant="bodyMedium" style={styles.error} key={key}>
@@ -142,17 +126,12 @@ function parseElement(
           {element.outerHTML}
         </Text>
       );
-    
   }
 }
 
-
 // Parse list of loose (possibly non-element) nodes
 // Returns a single JSX component
-function parseLooseNodes(
-  nodes: ArrayLike<Node>,
-  key: string
-): JSX.Element {
+function parseLooseNodes(nodes: ArrayLike<Node>, key: string): JSX.Element {
   let jsxChildren = [];
   let key2 = 0;
 
@@ -169,7 +148,7 @@ function parseLooseNodes(
         // Remove \n, since it should be ignored in HTML
         // Replace it with a space instead
 
-        let textContent = (node.textContent || '')
+        let textContent = node.textContent || '';
         // If there's a \n at the start, remove it instead of replacing with space
         if (jsxChildren.length === 0 && textContent[0] === '\n') {
           textContent = textContent.slice(1);
@@ -181,14 +160,12 @@ function parseLooseNodes(
     }
   }
 
-
   return (
     <Text variant="bodyMedium" key={key}>
       {jsxChildren}
     </Text>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -198,6 +175,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   error: {
-    color: 'red'
+    color: 'red',
   },
 });

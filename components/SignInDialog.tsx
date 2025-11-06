@@ -1,22 +1,23 @@
-import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
-import { StyleSheet } from "react-native";
-import { checkCanFetchCors, signIn } from "@/lib/hackerNewsAccount";
-import { signIn as accountStateSignIn } from "@/store/slices/accountState";
-import { useState } from "react";
-import { useAppDispatch } from "@/store/hooks";
-
+import {
+  Button,
+  Dialog,
+  Portal,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { checkCanFetchCors, signIn } from '@/lib/hackerNewsAccount';
+import { signIn as accountStateSignIn } from '@/store/slices/accountState';
+import { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
 
 interface Props {
-  visible: boolean,
-  onDismiss: () => void,
+  visible: boolean;
+  onDismiss: () => void;
 }
 
-
 // TODO: Add message telling user to install browser script if necessary
-export default function SignInDialog({
-  visible,
-  onDismiss,
-}: Props) {
+export default function SignInDialog({ visible, onDismiss }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
@@ -39,7 +40,7 @@ export default function SignInDialog({
       // TODO: Show error message
       return;
     }
-    
+
     if (success) {
       dispatch(accountStateSignIn(username));
       onDismiss();
@@ -52,15 +53,11 @@ export default function SignInDialog({
       setLoading(false);
       // TODO: Show error message
     }
-  }
+  };
 
   return (
     <Portal>
-      <Dialog
-        visible={visible}
-        dismissable={true}
-        onDismiss={onDismiss}
-      >
+      <Dialog visible={visible} dismissable={true} onDismiss={onDismiss}>
         <Dialog.Title>Sign in</Dialog.Title>
 
         <Dialog.Content style={styles.content}>
@@ -70,7 +67,7 @@ export default function SignInDialog({
             style={{ backgroundColor: theme.colors.elevation.level3 }}
             disabled={loading || !canFetchCors}
             value={username}
-            onChangeText={text => setUsername(text)}
+            onChangeText={(text) => setUsername(text)}
           />
           <TextInput
             label="Password"
@@ -78,31 +75,23 @@ export default function SignInDialog({
             style={{ backgroundColor: theme.colors.elevation.level3 }}
             disabled={loading || !canFetchCors}
             value={password}
-            onChangeText={text => setPassword(text)}
+            onChangeText={(text) => setPassword(text)}
             secureTextEntry
           />
         </Dialog.Content>
 
         <Dialog.Actions>
-          <Button
-            onPress={onSignInPressed}
-            disabled={loading || !canFetchCors}
-          >
+          <Button onPress={onSignInPressed} disabled={loading || !canFetchCors}>
             Sign in
           </Button>
-          <Button
-            onPress={onDismiss}
-            disabled={loading}
-          >
+          <Button onPress={onDismiss} disabled={loading}>
             Cancel
           </Button>
         </Dialog.Actions>
-
       </Dialog>
     </Portal>
   );
 }
-
 
 const styles = StyleSheet.create({
   surface: {

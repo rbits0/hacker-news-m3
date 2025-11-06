@@ -12,24 +12,23 @@
 // @license      GPL3
 // ==/UserScript==
 
-const HackerNewsCORS = document.body.appendChild(Object.assign(
-  document.createElement('div'),
-  { id: 'HackerNewsCORS' }
-));
+const HackerNewsCORS = document.body.appendChild(
+  Object.assign(document.createElement('div'), { id: 'HackerNewsCORS' }),
+);
 
+HackerNewsCORS.fetch = (url, options) =>
+  new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    if (urlObj.hostname !== 'news.ycombinator.com') {
+      reject('Hostname must be news.ycombinator.com');
+      return;
+    }
 
-HackerNewsCORS.fetch = (url, options) => new Promise((resolve, reject) => {
-  const urlObj = new URL(url);
-  if (urlObj.hostname !== 'news.ycombinator.com') {
-    reject('Hostname must be news.ycombinator.com');
-    return;
-  }
-
-  GM.xmlHttpRequest({
-    ...options,
-    url,
-    onload: (response) => resolve(response),
-    onerror: (response) => resolve(response),
-    ontimeout: (response) => resolve(response),
+    GM.xmlHttpRequest({
+      ...options,
+      url,
+      onload: (response) => resolve(response),
+      onerror: (response) => resolve(response),
+      ontimeout: (response) => resolve(response),
+    });
   });
-});

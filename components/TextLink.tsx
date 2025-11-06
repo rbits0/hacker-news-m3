@@ -1,7 +1,6 @@
-import { Link, LinkProps } from "expo-router"
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-
+import { Link, LinkProps } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function TextLink(props: LinkProps) {
   const { style, children } = props;
@@ -14,12 +13,11 @@ export default function TextLink(props: LinkProps) {
     >
       {children}
     </Link>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
   },
-})
+});

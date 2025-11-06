@@ -1,15 +1,13 @@
-import Story from "@/components/Story";
-import { useLocalSearchParams } from "expo-router"
-import { View, StyleSheet, useWindowDimensions, FlatList } from "react-native";
-import { Divider, useTheme } from "react-native-paper";
-import { LARGE_WIDTH } from "@/app/_layout";
-import CommentTree from "@/components/CommentTree";
-import { useGetAlgoliaItemByIdQuery } from "@/store/services/algolia";
-import { algoliaItemToItem } from "@/store/AlgoliaItem";
-
+import Story from '@/components/Story';
+import { useLocalSearchParams } from 'expo-router';
+import { View, StyleSheet, useWindowDimensions, FlatList } from 'react-native';
+import { Divider, useTheme } from 'react-native-paper';
+import { LARGE_WIDTH } from '@/app/_layout';
+import CommentTree from '@/components/CommentTree';
+import { useGetAlgoliaItemByIdQuery } from '@/store/services/algolia';
+import { algoliaItemToItem } from '@/store/AlgoliaItem';
 
 const NUM_COMMENTS_PER_PAGE = 20;
-
 
 export default function CommentsScreen() {
   const theme = useTheme();
@@ -22,10 +20,10 @@ export default function CommentsScreen() {
     isError,
   } = useGetAlgoliaItemByIdQuery(parseInt(id));
 
-
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       <FlatList
         data={item?.children}
         renderItem={({ item }) => <CommentTree item={item} />}
@@ -44,11 +42,9 @@ export default function CommentsScreen() {
           </View>
         }
       />
-
     </View>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +60,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginTop: 8,
-    marginBottom: -2 // Combined with gap of 10 makes this 8
+    marginBottom: -2, // Combined with gap of 10 makes this 8
   },
 });

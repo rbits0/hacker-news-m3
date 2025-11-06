@@ -8,50 +8,57 @@ import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import { useAppSelector } from '@/store/hooks';
 
-
 interface Props {
-  item: Item | undefined,
-  itemIsLoading?: boolean,
-  itemIsError?: boolean,
+  item: Item | undefined;
+  itemIsLoading?: boolean;
+  itemIsError?: boolean;
 }
 
-const Comment = memo(function Comment({ item, itemIsLoading, itemIsError }: Props) {
+const Comment = memo(function Comment({
+  item,
+  itemIsLoading,
+  itemIsError,
+}: Props) {
   // WIP
 
   const theme = useTheme();
-  
-  const displayVotes = useAppSelector(state => state.settings.displayVotes);
-  const largeVoteButton = useAppSelector(state => state.settings.commentsLargeVoteButton);
 
-  const itemUrl = item
-    ? `/comments/${item.id}` as Route
-    : undefined;
-  const userUrl = item
-    ? `https://news.ycombinator.com/user?id=${item.by}` as Route
+  const displayVotes = useAppSelector((state) => state.settings.displayVotes);
+  const largeVoteButton = useAppSelector(
+    (state) => state.settings.commentsLargeVoteButton,
+  );
+
+  const itemUrl = item ? (`/comments/${item.id}` as Route) : undefined;
+  const userUrl =
+    item ?
+      (`https://news.ycombinator.com/user?id=${item.by}` as Route)
     : undefined;
 
-  const text = itemIsLoading ? 'Loading...'
+  const text =
+    itemIsLoading ? 'Loading...'
     : itemIsError ? 'Comment failed to load'
     : item?.deleted ? '[deleted]'
     : item!.text || '';
 
-  
   return (
     <View style={styles.container}>
-
-      {displayVotes && largeVoteButton ? (
+      {displayVotes && largeVoteButton ?
         <VoteButtonLarge
           disabled={item === undefined}
           score={item?.score}
-          onPress={() => { /* TODO: Vote */ }}
+          onPress={() => {
+            /* TODO: Vote */
+          }}
         />
-      ) : null}
-    
-      <Surface style={[styles.surface]}>
+      : null}
 
+      <Surface style={[styles.surface]}>
         <View style={styles.detailsRow}>
           <OptionalLink href={userUrl}>
-            <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.secondary }]}>
+            <Text
+              variant="bodyMedium"
+              style={[styles.detailsText, { color: theme.colors.secondary }]}
+            >
               {item ? item.by : ''}
             </Text>
           </OptionalLink>
@@ -60,12 +67,10 @@ const Comment = memo(function Comment({ item, itemIsLoading, itemIsError }: Prop
         <View style={styles.textBodyView}>
           <TextBody text={text} />
         </View>
-
       </Surface>
     </View>
-  )
+  );
 });
-
 
 const styles = StyleSheet.create({
   container: {
@@ -94,12 +99,10 @@ const styles = StyleSheet.create({
   noItemView: {
     marginLeft: 4,
   },
-  detailsText: {
-  },
+  detailsText: {},
   textBodyView: {
     margin: 6,
   },
 });
-
 
 export default Comment;

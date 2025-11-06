@@ -9,34 +9,33 @@ import TextBody from './TextBody';
 import VoteButtonLarge from './VoteButtonLarge';
 import LinkImage from './LinkImage';
 import { MAX_POST_WIDTH } from '@/app/_layout';
-import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Swipeable, {
+  SwipeableMethods,
+} from 'react-native-gesture-handler/ReanimatedSwipeable';
 import SwipeVote from './SwipeVote';
-
 
 const SWIPE_THRESHOLD = 40;
 
-
 interface Props {
-  item?: Item,
-  itemIsLoading?: boolean,
-  itemIsError?: boolean,
-  itemId?: number,
-  showBody?: boolean,
-  disableCommentsLink?: boolean,
+  item?: Item;
+  itemIsLoading?: boolean;
+  itemIsError?: boolean;
+  itemId?: number;
+  showBody?: boolean;
+  disableCommentsLink?: boolean;
 }
 
-const Story = memo (function Story({
-    item,
-    itemIsLoading,
-    itemIsError,
-    itemId,
-    showBody,
-    disableCommentsLink
-  }: Props
-) {
+const Story = memo(function Story({
+  item,
+  itemIsLoading,
+  itemIsError,
+  itemId,
+  showBody,
+  disableCommentsLink,
+}: Props) {
   const theme = useTheme();
   const swipeableRef = useRef<SwipeableMethods | null>(null);
-  
+
   const {
     data: fetchedItem,
     isLoading: fetchedItemIsLoading,
@@ -49,20 +48,20 @@ const Story = memo (function Story({
   const isError = itemIsError || fetchedItemIsError;
 
   const itemToRender = fetchedItem ? fetchedItem : item;
-  const itemUrl = itemToRender
-    ? `/comments/${itemToRender.id}` as Route
-    : undefined;
-  const userUrl = itemToRender
-    ? `https://news.ycombinator.com/user?id=${itemToRender.by}` as Route
+  const itemUrl =
+    itemToRender ? (`/comments/${itemToRender.id}` as Route) : undefined;
+  const userUrl =
+    itemToRender ?
+      (`https://news.ycombinator.com/user?id=${itemToRender.by}` as Route)
     : undefined;
   const articleUrl = itemToRender?.url as ExternalPathString | undefined;
 
-  const titleText = isLoading ? 'Loading'
+  const titleText =
+    isLoading ? 'Loading'
     : isError ? 'Failed to load'
     : itemToRender?.deleted ? '[deleted]'
     : itemToRender?.title || '';
 
-  
   const onVote = () => {
     // Stop swipeable from opening
     swipeableRef.current?.close();
@@ -70,15 +69,14 @@ const Story = memo (function Story({
     // TODO: Vote
   };
 
-  
   return (
     <View style={styles.outerContainer}>
       <Swipeable
         containerStyle={styles.swipeableContainerStyle}
         childrenContainerStyle={styles.container}
-        renderRightActions={(progress, translation) => (
+        renderRightActions={(progress, translation) =>
           SwipeVote(progress, translation, false)
-        )}
+        }
         rightThreshold={SWIPE_THRESHOLD}
         onSwipeableWillOpen={onVote}
         ref={swipeableRef}
@@ -86,12 +84,14 @@ const Story = memo (function Story({
         <VoteButtonLarge
           disabled={itemToRender === undefined}
           score={itemToRender?.score}
-          onPress={() => { /* TODO: Vote */ }}
+          onPress={() => {
+            /* TODO: Vote */
+          }}
         />
-      
+
         <Surface style={[styles.surface]}>
           <View style={[styles.surfaceRow]}>
-            <LinkImage href={articleUrl}/>
+            <LinkImage href={articleUrl} />
 
             {/* Title */}
             <OptionalLink
@@ -99,38 +99,48 @@ const Story = memo (function Story({
               enabled={itemToRender && !disableCommentsLink}
               style={styles.titleLink}
             >
-              <Text variant="bodyLarge" style={styles.titleText} >
+              <Text variant="bodyLarge" style={styles.titleText}>
                 {titleText}
               </Text>
             </OptionalLink>
           </View>
 
-          {showBody && itemToRender?.text ? (
+          {showBody && itemToRender?.text ?
             <View style={styles.textBodyView}>
               <TextBody text={itemToRender.text} />
             </View>
-          ) : null}
-        
+          : null}
+
           <View style={styles.detailsRow}>
             <OptionalLink href={itemUrl} enabled={!disableCommentsLink}>
-              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+              <Text
+                variant="bodyMedium"
+                style={[
+                  styles.detailsText,
+                  { color: theme.colors.onSurfaceVariant },
+                ]}
+              >
                 {itemToRender ? `${itemToRender.descendants} comments` : ' '}
               </Text>
             </OptionalLink>
 
             <OptionalLink href={userUrl}>
-              <Text variant="bodyMedium" style={[styles.detailsText, { color: theme.colors.onSurfaceVariant }]}>
+              <Text
+                variant="bodyMedium"
+                style={[
+                  styles.detailsText,
+                  { color: theme.colors.onSurfaceVariant },
+                ]}
+              >
                 {itemToRender ? itemToRender.by : ' '}
               </Text>
             </OptionalLink>
           </View>
-
         </Surface>
       </Swipeable>
     </View>
-  )
+  );
 });
-
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -162,10 +172,9 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   noItemView: {
-    marginLeft: 4
+    marginLeft: 4,
   },
-  detailsText: {
-  },
+  detailsText: {},
   textBodyView: {
     margin: 6,
   },
@@ -176,6 +185,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
 
 export default Story;
